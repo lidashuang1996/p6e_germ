@@ -29,7 +29,7 @@ import { Options, Vue } from 'vue-class-component';
     EyeInvisibleOutlined
   }
 })
-export default class InputPasswordComponent extends Vue implements InputInterface {
+export default class InputAccountComponent extends Vue implements InputInterface {
   public placeholder = '请输入手机号码/邮箱';
   public maxlength = 32;
   public value = '';

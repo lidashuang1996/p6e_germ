@@ -19,6 +19,17 @@
       letter-spacing: 0;
     }
   }
+  .button {
+    min-width: 130px;
+    width: 130px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button {
+      height: 100%;
+    }
+  }
   .ico {
     max-width: 40px;
     min-width: 40px;

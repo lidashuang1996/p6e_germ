@@ -64,8 +64,8 @@ export default class Index extends Vue {
    */
   public windowStyleCalculation () {
     const height = Number(document.body.clientHeight);
-    if (height > 788) {
-      this.windowStyle = 'margin-top: ' + ((height - 788) / 2) + 'px;';
+    if (height > 750) {
+      this.windowStyle = 'margin-top: ' + ((height - 750) / 2) + 'px;';
     }
   }
 }

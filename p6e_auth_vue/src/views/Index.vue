@@ -5,7 +5,7 @@
       <div class="index-main">
         <!-- logo -->
         <div class="index-logo" :style="windowStyle">
-          <img src="../assets/images/sign_logo.png" alt="logo"/>
+          <img src="../assets/logo/logo.png" alt="logo"/>
         </div>
         <!-- main -->
         <div class="index-content">

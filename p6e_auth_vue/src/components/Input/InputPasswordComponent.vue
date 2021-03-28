@@ -27,6 +27,7 @@ import { InputInterface } from '../components';
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
+  emits: ['focus'],
   components: {
     EyeOutlined,
     EyeInvisibleOutlined
@@ -57,6 +58,7 @@ export default class InputPasswordComponent extends Vue implements InputInterfac
    * 获取焦点
    */
   public focusEvent () {
+    this.$emit('focus');
     this.closePrompt();
   }
 
@@ -71,10 +73,6 @@ export default class InputPasswordComponent extends Vue implements InputInterfac
     }
     if (value.length < 5) {
       this.error = '密码长度不能低于5位';
-      return false;
-    }
-    if (value === '456') {
-      this.error = '密码格式不正确';
       return false;
     }
     this.error = '';

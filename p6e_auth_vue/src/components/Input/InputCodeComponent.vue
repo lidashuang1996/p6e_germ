@@ -21,13 +21,13 @@
 
 <script lang="ts">
 import Utils from '@/utils/main';
-import { InputInterface } from '../components';
+import { CodeInputInterface } from '../components';
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
-  emits: ['focus']
+  emits: ['focus', 'code']
 })
-export default class InputCodeComponent extends Vue implements InputInterface {
+export default class InputCodeComponent extends Vue implements CodeInputInterface {
   public placeholder = '请输入验证码';
   public maxlength = 6;
   public value = '';
@@ -36,6 +36,9 @@ export default class InputCodeComponent extends Vue implements InputInterface {
   /** 从缓存中读取的登录验证编码 */
   public codeDateTime = 0;
 
+  /**
+   * 钩子函数，缓存中读取倒计时的事件
+   */
   public mounted () {
     this.countdown(Utils.Cache.getSignInCodeCache());
   }
@@ -97,24 +100,32 @@ export default class InputCodeComponent extends Vue implements InputInterface {
    * 获取登录验证码
    */
   public obtainCode () {
-    this.countdown(60);
+    this.$emit('code');
   }
 
   /**
    * 倒计时
    */
   public countdown (num: number | null) {
-    if (num !== null) {
-      this.codeDateTime = num;
-      Utils.Cache.setSignInCodeCache(num);
-    }
     if (this.codeDateTime <= 0) {
-      this.codeDateTime = 0;
-      Utils.Cache.setSignInCodeCache(0);
-    } else {
-      this.codeDateTime -= 1;
-      Utils.Cache.setSignInCodeCache(this.codeDateTime);
-      setTimeout(() => this.countdown(null), 1000);
+      if (num !== null) {
+        this.codeDateTime = num;
+        Utils.Cache.setSignInCodeCache(num);
+      }
+      if (this.codeDateTime <= 0) {
+        this.codeDateTime = 0;
+      } else {
+        this.codeDateTime -= 1;
+        const f = () => {
+          if (this.codeDateTime <= 0) {
+            this.codeDateTime = 0;
+          } else {
+            this.codeDateTime -= 1;
+            setTimeout(() => f(), 1000);
+          }
+        };
+        setTimeout(() => f(), 1000);
+      }
     }
   }
 

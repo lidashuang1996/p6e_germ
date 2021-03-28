@@ -12,8 +12,9 @@
         <a-button type="primary"
                   block="block"
                   class="button"
+                  :loading="isLoading"
                   @click.stop="confirm">
-          登 录
+          <span v-if="!isLoading">登 录</span>
         </a-button>
         <!-- 错误提示 -->
         <p class="error" v-if="error !== ''" v-text="'* ' + error"></p>
@@ -23,6 +24,11 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable */
+// @ts-ignore
+const voucher = window['P6E_AUTH_CERTIFICATE_VOUCHER'];
+
+import { ApiSignIn } from '@/http/main-sign-in';
 import { Options, Vue } from 'vue-class-component';
 import { InputInterface } from '@/components/components.ts';
 import InputAccountComponent from '@/components/Input/InputAccountComponent.vue';
@@ -37,15 +43,28 @@ import InputPasswordComponent from '@/components/Input/InputPasswordComponent.vu
 export default class SignAccountPassword extends Vue {
   /** 错误提示文本 */
   public error = '';
+  /** 登录是否加载中 */
+  public isLoading = false;
+
   /**
    * 登录确认的方法
    */
-  public confirm () {
+  public async confirm () {
     const account = this.$refs.refInputAccount as InputInterface;
     const password = this.$refs.refInputPassword as InputInterface;
     if (account.test() && password.test()) {
-      this.error = '31232131';
-      console.log(account.getData(), password.getData());
+      // 发送登录请求
+      this.isLoading = true;
+      const res = await ApiSignIn({
+        voucher: voucher,
+        account: account.getData(),
+        password: password.getData()
+      });
+      this.isLoading = false;
+      if (res.code === 0) {
+        // 处理登录之后的操作
+        console.log(account.getData(), password.getData());
+      }
     }
   }
 

@@ -1,14 +1,4 @@
 /**
- * 生成二维码组件的接口
- */
-export interface QrCodeComponentInterface {
-  /**
-   * 生成二维码
-   */
-  qrCode (text: string): void;
-}
-
-/**
  * 输入框组件的接口
  */
 export interface InputInterface {
@@ -22,3 +12,25 @@ export interface InputInterface {
    */
   getData (): string;
 }
+
+export interface CodeInputInterface extends InputInterface{
+  /**
+   * 获取数据框数据
+   */
+  countdown (num: number): void;
+}
+
+
+
+
+/**
+ * 生成二维码组件的接口
+ */
+export interface QrCodeComponentInterface {
+  /**
+   * 生成二维码
+   */
+  qrCode (text: string): void;
+}
+
+

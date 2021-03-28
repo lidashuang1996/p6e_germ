@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import Index from '../views/Index.vue';
 import SignIn from '../views/sign/SignIn.vue';
+import Notice from '../views/notice/Notice.vue';
+import Me from '../views/me/Me.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,11 +14,21 @@ const routes: Array<RouteRecordRaw> = [
         path: '/',
         name: 'sign_in',
         component: SignIn
+      },
+      {
+        path: '/notice',
+        name: 'notice',
+        component: Notice
+      },
+      {
+        path: '/me',
+        name: 'me',
+        component: Me
       }
     ]
   }
   // {
-  //   path: '/about',
+  //   path: '/error',
   //   name: 'About',
   //   // route level code-splitting
   //   // this generates a separate chunk (about.[hash].js) for this route

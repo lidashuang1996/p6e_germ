@@ -59,12 +59,28 @@ export default class InputAccountComponent extends Vue implements InputInterface
       this.error = '账号不能为空';
       return false;
     }
-    if (value === '123456') {
-      this.error = '账号格式错误';
+    if (!this.testEmail(value) && !this.testPhone(value)) {
+      this.error = '账号格式不正确';
       return false;
     }
     this.error = '';
     return true;
+  }
+
+  /**
+   * 验证是否为电话号码
+   */
+  public testPhone (content: string): boolean {
+    const reg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    return reg.test(content);
+  }
+
+  /**
+   * 验证是否为邮箱
+   */
+  public testEmail (content: string): boolean {
+    const reg = /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+    return reg.test(content);
   }
 
   /**

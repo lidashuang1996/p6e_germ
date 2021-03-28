@@ -16,11 +16,6 @@ export default class QrCodeComponent extends Vue implements QrCodeComponentInter
   /** canvas */
   public canvas: HTMLCanvasElement | null = null;
 
-  /** 初始化 */
-  public mounted () {
-    this.qrCode('http://www.lidashuang.com');
-  }
-
   /** qr code */
   public qrCode (text: string) {
     if (this.canvas === null) {

@@ -123,18 +123,7 @@ img {
 }
 
 .sign-container {
-  .title {
-    font-size: 36px;
-    color: $sign-color;
-    text-align: center;
-    padding: 60px 0 24px;
-  }
-  .subtitle {
-    font-size: 16px;
-    color: $sign-color;
-    padding: 24px 0;
-    text-align: center;
-  }
+
 }
 
 .sign-in {
@@ -217,20 +206,113 @@ img {
 
 
 .sign-in-code {
+  .title {
+    font-size: 28px;
+    color: $sign-color;
+    text-align: center;
+    padding: 48px 0 24px;
+  }
+  .subtitle {
+    font-size: 16px;
+    color: $sign-color;
+    padding: 24px 0;
+    text-align: center;
+  }
   .sign-in-code-content {
     width: 100%;
-    height: 260px;
+    height: 235px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     .code-loading {
-      font-size: 48px;
+      font-size: 36px;
       color: #666666;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
     }
   }
 }
 
 
+.notice {
+  padding: 40px 0;
+  .notice-title {
+    font-size: 28px;
+    color: $sign-color;
+    text-align: center;
+    padding: 11px 0 42px;
+  }
+  .notice-content {
+    padding: 24px;
+    .notice-content-img {
+      padding: 0 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      img {
+        border: 1px solid #eaeaea;
+        border-radius: 6px;
+        padding: 6px;
+      }
+      span {
+        color: #222222;
+        font-size: 14px;
+        padding: 10px 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .notice-content-left {
+        width: 80px;
+      }
+      .notice-content-right {
+        width: 80px;
+      }
+      .notice-content-interaction {
+        width: 40px;
+        min-width: 40px;
+        height: 100%;
+        position: relative;
+        svg {
+          font-size: 40px;
+          color: #b3b3b3;
+        }
+        .interaction-top {
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        .interaction-bottom {
+          position: absolute;
+          padding-bottom: 0;
+          left: 0;
+          top: 30px;
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .notice-content-text {
+      width: 100%;
+      height: 40px;
+      min-width: 30px;
+      margin: 12px 0;
+    }
+  }
+  .notice-button {
+    margin: 22px 24px 18px;
+    button {
+      height: 42px;
+      font-size: 16px;
+    }
+  }
+}
 
 .index {
   width: 100%;
@@ -248,7 +330,7 @@ img {
     background-size: 100% auto;
     background-repeat: no-repeat;
     background-position: center bottom;
-    background-image: url("../assets/images/sign_background.png");
+    background-image: url("../assets/images/sign_bg.jpeg");
     display: flex;
     align-items: center;
     justify-content: center;
@@ -296,6 +378,21 @@ img {
         text-decoration: underline;
       }
     }
+  }
+}
+
+
+.error {
+  .title {
+    color: #222222;
+    font-size: 100px;
+    padding: 120px 0 40px;
+    text-align: center;
+  }
+  .subtitle {
+    color: #222222;
+    font-size: 20px;
+    text-align: center;
   }
 }
 

@@ -7,8 +7,8 @@
       <AppstoreAddOutlined v-if="mode === 'QC'"/>
     </div>
     <!-- 账号密码/二维码模式 -->
-<!--    <sign-in-code/>-->
-    <sign-in-account/>
+    <sign-in-code v-if="mode === 'QC'"/>
+    <sign-in-account v-if="mode === 'AP'"/>
     <!-- 其它的第三方授权登录 -->
     <div class="sign-in-mode-other">
       <div class="other-title">社交账号登录</div>

@@ -1,6 +1,6 @@
 <template>
-<!--  <router-view/>-->
-  <error-404/>
+  <router-view/>
+<!--  <error-404/>-->
 </template>
 <script lang="ts">
 import Error404 from '@/views/error/Error404.vue';

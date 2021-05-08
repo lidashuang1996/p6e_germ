@@ -1,0 +1,64 @@
+package com.p6e.germ.video.actuator;
+
+import com.p6e.germ.video.*;
+import com.p6e.germ.video.message.RtmpConnectMessage;
+import io.netty.buffer.Unpooled;
+
+import java.util.Arrays;
+
+/**
+ * @author lidashuang
+ * @version 1.0
+ */
+public class RtmpConnectActuator implements RtmpActuator {
+
+    @Override
+    public void execute(RtmpContext context, RtmpMessage message) {
+        // 0300000000001514000000010200075F726573756C74003FF00000000000000305
+        // 创建流
+
+        System.out.println(message);
+
+        RtmpConnectMessage rtmpConnectMessage = (RtmpConnectMessage) message;
+
+        if (String.valueOf(rtmpConnectMessage.getData()[0]).equals("connect")) {
+            System.out.println("响应 连接 ---!! ");
+            System.out.println(new String(Utils.hexToByte("0300000000001514000000010200075F726573756C74003FF00000000000000505")));
+            context.writeAndFlush(Unpooled.copiedBuffer(Utils.hexToByte("0300000000001514000000010200075F726573756C74003FF00000000000000305")));
+        }
+
+
+        if (String.valueOf(rtmpConnectMessage.getData()[0]).equals("createStream")) {
+            System.out.println("响应 创建流 ---!! ");
+            System.out.println(new String(Utils.hexToByte("4300000000001D140200075F726573756C7400401000000000000005003FF0000000000000")));
+            context.writeAndFlush(Unpooled.copiedBuffer(Utils.hexToByte("4300000000001D140200075F726573756C7400401000000000000005003FF0000000000000")));
+        }
+
+        // 43 // 00 00 00 // 00 00 1D // 14 // 02 0007 5F726573756C74 // 00 4010000000000000 // 05 // 00 3FF0000000000000
+        //
+
+        if (String.valueOf(rtmpConnectMessage.getData()[0]).equals("publish")) {
+            System.out.println("响应 publish ---!! ");
+            System.out.println(Arrays.toString(Utils.amfDecoder(Utils.hexToByte("0200086F6E537461747573004014000000000000"))));
+            System.out.println(Arrays.toString(Utils.amfDecoder(Utils.hexToByte("0300056C6576656C0200067374617475730004636F64650200174E657453747265616D2E5075626C6973682E5374617274000B6465736372697074696F6E0200105374617274207075626C697368696E6709"))));
+            context.writeAndFlush(Unpooled.copiedBuffer(Utils.hexToByte("0800000000006614010000010200086F6E537461747573004014000000000000050300056C6576656C0200067374617475730004636F64650200174E657453747265616D2E5075626C6973682E5374617274000B6465736372697074696F6E0200105374617274207075626C697368696E6709")));
+            RtmpDecoder.b = true;   // 080000000000661401000001
+        }
+
+        // 08 000000 00001f 14 01000000  // 02 0007 7075626c697368 // 00 4014000000000000 // 05 // 02 00 01 31 // 02 0004 6c697665
+        // 08 000000 000066 14 01000001  // 02 0008 6F6E537461747573 // 00 3FF0000000000000 // 05 // 03  // 0005 6C6576656C 02 0006 737461747573 // 0004 636F6465 02 0017 4E657453747265616D2E5075626C697368 2E5374617274 // 000B 6465736372697074696F6E 0200105374617274207075626C697368696E67
+
+        // 0800000000006614010000010200086F6E537461747573003FF0000000000000050300056C6576656C0200067374617475730004636F64650200174E657453747265616D2E5075626C6973682E5374617274000B6465736372697074696F6E0200105374617274207075626C697368696E67
+
+
+        // AMF //
+        // 这些消息被分配以消息类型值为 20 以进行 AMF0 编码，消息类型值为 17 以进行 AMF3 编码
+
+        // 43 00 00 00 00 00 1e 14 02 00 0d // 72656c6561736553747265616d00400000000000000005020001314300000000001a1402000946435075626c6973680040080000000000000502000131430000000000191402000c63726561746553747265616d00401000000000000005
+        // 01000011
+
+        // 44 00 00 17 00 00 14 08 af012113039011020620803e48dc81441008605c
+        // 44 00 00 9b 00 00 19 08 af01de02004c61766335382e39312e31303000422008c11838
+    }
+
+}

@@ -43,3 +43,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ｜
 ｜
 登录成功 >>>>  去主网站 // 
+
+
+// p6e_germ_auth

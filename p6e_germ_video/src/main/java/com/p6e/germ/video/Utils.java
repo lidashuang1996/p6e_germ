@@ -28,8 +28,19 @@ import java.util.zip.Inflater;
 public final class Utils {
 
     public static void main(String[] args) {
+        System.out.println(Utils.bytesToIntLittle(new byte[] {
+                0,
+                0,
+                (byte) 0x33,
+                (byte) 0xaa,
+                // 0033aa
+        }));
         System.out.println(Double.longBitsToDouble(Long.parseLong(bytesToHex(
-                hexToByte("4014000000000000")
+                hexToByte("4010000000000000")
+        ), 16)));
+
+        System.out.println(Double.longBitsToDouble(Long.parseLong(bytesToHex(
+                hexToByte("0000000000000000")
         ), 16)));
 
         System.out.println(Double.longBitsToDouble(Long.parseLong(bytesToHex(

@@ -58,9 +58,10 @@ public class RtmpDecoder extends ByteToMessageDecoder {
         // 读取数据
         final byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
-        System.out.println("收到数据 --->  "  + Utils.bytesToHex(bytes));
+        // System.out.println("收到数据 --->  "  + Utils.bytesToHex(bytes));
 
         if (b) {
+            RtmpJX.run(bytes);
             return;
         }
 
@@ -211,7 +212,6 @@ public class RtmpDecoder extends ByteToMessageDecoder {
                                 throw new RuntimeException("[ 解码失败 ] FMT 异常 ～");
                         }
                         cacheHeader = new RtmpMessage.Header(fmt, csId, timestamp, messageLength, messageTypeId, messageStreamId);
-                        System.out.println(index + messageLength + 1 <= bytes.length);
                         if (index + messageLength + 1 <= bytes.length) {
                             if (is) {
                                 byte[] cs = Utils.bytesArrayIntercept(bytes, index + 1, bytes.length - index - 1);

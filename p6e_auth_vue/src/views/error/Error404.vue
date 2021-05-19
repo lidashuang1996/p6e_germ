@@ -17,20 +17,20 @@ import { Options, Vue } from 'vue-class-component';
 export default class Error404 extends Vue {
   private flvPlayer: any = null;
   public mounted () {
-    if (flvjs.isSupported()) {
-      const videoElement = document.getElementById('videoElement');
-      this.flvPlayer = flvjs.createPlayer({
-        type: 'flv',
-        url: 'http://1011.hlsplay.aodianyun.com/demo/game.flv'
-      });
-      this.flvPlayer.attachMediaElement(videoElement);
-      this.flvPlayer.load();
-    }
+    // if (flvjs.isSupported()) {
+    //   const videoElement = document.getElementById('videoElement');
+    //   this.flvPlayer = flvjs.createPlayer({
+    //     type: 'flv',
+    //     url: 'http://1011.hlsplay.aodianyun.com/demo/game.flv'
+    //   });
+    //   this.flvPlayer.attachMediaElement(videoElement);
+    //   this.flvPlayer.load();
+    // }
   }
 
-  public play () {
-    this.flvPlayer.play();
-  }
+  // public play () {
+  //   this.flvPlayer.play();
+  // }
 }
 </script>
 <style>

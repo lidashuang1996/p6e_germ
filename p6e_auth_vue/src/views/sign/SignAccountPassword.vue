@@ -26,7 +26,7 @@
 <script lang="ts">
 /* eslint-disable */
 // @ts-ignore
-const voucher = window['P6E_AUTH_CERTIFICATE_VOUCHER'];
+const VOUCHER = window['P6E_AUTH_CERTIFICATE_VOUCHER'];
 
 import { ApiSignIn } from '@/http/main-sign-in';
 import { Options, Vue } from 'vue-class-component';
@@ -56,7 +56,7 @@ export default class SignAccountPassword extends Vue {
       // 发送登录请求
       this.isLoading = true;
       const res = await ApiSignIn({
-        voucher: voucher,
+        voucher: VOUCHER,
         account: account.getData(),
         password: password.getData()
       });

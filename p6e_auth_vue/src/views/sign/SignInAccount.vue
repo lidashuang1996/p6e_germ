@@ -16,7 +16,9 @@
     <!-- 协议内容 -->
     <div class="sign-in-account-agreement">
       <p>
-        未注册手机验证后自动登录，注册即代表同意<a href="javascript:;">《知乎协议》</a><a href="javascript:;">《隐私保护指引》</a>
+        未注册账号验证后自动登录，注册即代表同意
+        <a href="https://www.baidu.com" target="_blank">《XXXX协议》</a>
+        <a href="https://www.baidu.com" target="_blank">《隐私保护指引》</a>
       </p>
     </div>
   </div>

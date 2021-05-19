@@ -2,7 +2,9 @@
   <!-- p6e auth sign in -->
   <div class="sign-in sign-container">
     <!-- 登录模式切换 -->
-    <div class="sign-in-mode-switch" @click.stop="signInModeSwitch()">
+    <div class="sign-in-mode-switch"
+         @click.stop="signInModeSwitch()"
+         :title="mode === 'AP' ? '扫码登录' : '账号登录'">
       <QrcodeOutlined v-if="mode === 'AP'"/>
       <AppstoreAddOutlined v-if="mode === 'QC'"/>
     </div>
@@ -13,9 +15,9 @@
     <div class="sign-in-mode-other">
       <div class="other-title">社交账号登录</div>
       <div class="other-content">
-        <p class="other-nav-wx"><WechatOutlined/><span>微信</span></p>
-        <p class="other-nav-qq"><QqOutlined/><span>QQ</span></p>
-        <p class="other-nav-wb"><WeiboCircleOutlined/><span>微博</span></p>
+        <p class="other-nav-wx" @click.stop="wechat"><WechatOutlined/><span>微信</span></p>
+        <p class="other-nav-qq" @click.stop="qq"><QqOutlined/><span>QQ</span></p>
+        <p class="other-nav-wb" @click.stop="weibo"><WeiboCircleOutlined/><span>微博</span></p>
       </div>
     </div>
   </div>
@@ -23,12 +25,13 @@
 
 <script lang="ts">
 import {
-  QrcodeOutlined,
-  AppstoreAddOutlined,
-  WechatOutlined,
   QqOutlined,
+  QrcodeOutlined,
+  WechatOutlined,
+  AppstoreAddOutlined,
   WeiboCircleOutlined
 } from '@ant-design/icons-vue';
+import { Modal } from 'ant-design-vue';
 import SignInCode from './SignInCode.vue';
 import SignInAccount from './SignInAccount.vue';
 import { Options, Vue } from 'vue-class-component';
@@ -37,10 +40,10 @@ import { Options, Vue } from 'vue-class-component';
   components: {
     SignInCode,
     SignInAccount,
-    QrcodeOutlined,
-    AppstoreAddOutlined,
-    WechatOutlined,
     QqOutlined,
+    QrcodeOutlined,
+    WechatOutlined,
+    AppstoreAddOutlined,
     WeiboCircleOutlined
   }
 })
@@ -55,8 +58,44 @@ export default class SignIn extends Vue {
   /**
    * 登录模式的切换
    */
-  public signInModeSwitch () {
+  private signInModeSwitch (): void {
     this.mode = this.mode === 'AP' ? 'QC' : 'AP';
+  }
+
+  /**
+   * QQ 第三方登录
+   */
+  private qq (): void {
+    Modal.warning({
+      centered: true,
+      title: '抱歉',
+      okText: '确定',
+      content: '第三方QQ账号登录暂未开通'
+    });
+  }
+
+  /**
+   * 微信第三方登录
+   */
+  private wechat (): void {
+    Modal.warning({
+      centered: true,
+      title: '抱歉',
+      okText: '确定',
+      content: '第三方微信账号登录暂未开通'
+    });
+  }
+
+  /**
+   * 微博第三方登录
+   */
+  private weibo (): void {
+    Modal.warning({
+      centered: true,
+      title: '抱歉',
+      okText: '确定',
+      content: '第三方微博账号登录暂未开通'
+    });
   }
 }
 </script>

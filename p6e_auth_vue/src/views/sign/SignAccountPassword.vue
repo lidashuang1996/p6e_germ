@@ -24,11 +24,14 @@
 </template>
 
 <script lang="ts">
+// 从全局读取的数据
 /* eslint-disable */
 // @ts-ignore
-const VOUCHER = window['P6E_AUTH_CERTIFICATE_VOUCHER'];
-
+const G_MARK = window['P6E_OAUTH2_DATA'].mark;
+import JSEncrypt from 'jsencrypt';
+import { Modal } from 'ant-design-vue';
 import { ApiSignIn } from '@/http/main-sign-in';
+import { ApiSignVoucher } from '@/http/main-sign';
 import { Options, Vue } from 'vue-class-component';
 import { InputInterface } from '@/components/components.ts';
 import InputAccountComponent from '@/components/Input/InputAccountComponent.vue';
@@ -45,25 +48,64 @@ export default class SignAccountPassword extends Vue {
   public error = '';
   /** 登录是否加载中 */
   public isLoading = false;
-
+  /** 登录的凭证内容 */
+  private voucher = '';
+  /** 公钥 */
+  private publicKey = '';
   /**
    * 登录确认的方法
    */
   public async confirm () {
+    // 转换为输入框的类型
     const account = this.$refs.refInputAccount as InputInterface;
     const password = this.$refs.refInputPassword as InputInterface;
-    if (account.test() && password.test()) {
+    // 验证数据格式以及判断是否在登录中
+    if (account.test() && password.test() && !this.isLoading) {
       // 发送登录请求
-      this.isLoading = true;
-      const res = await ApiSignIn({
-        voucher: VOUCHER,
-        account: account.getData(),
-        password: password.getData()
-      });
-      this.isLoading = false;
-      if (res.code === 0) {
-        // 处理登录之后的操作
-        console.log(account.getData(), password.getData());
+      try {
+        this.isLoading = true;
+        // 获取登录的凭证
+        if (this.voucher === '') {
+          const res1 = await ApiSignVoucher();
+          if (res1.code === 0) {
+            this.voucher = res1.data.voucher;
+            this.publicKey = res1.data.publicKey;
+          } else {
+            this.isLoading = false;
+            this.error = res1.message;
+            return;
+          }
+        }
+        // 使用公钥加密
+        const encrypt = new JSEncrypt({});
+        encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + this.publicKey + '-----END PUBLIC KEY-----');
+        const resultEncrypt = encrypt.encrypt(password.getData());
+        if (!resultEncrypt) {
+          this.error = '网页异常，请稍后重试！';
+          return;
+        }
+        // 执行登录操作
+        const res2 = await ApiSignIn({
+          mark: G_MARK,
+          voucher: this.voucher,
+          account: account.getData(),
+          password: resultEncrypt.toString()
+        });
+        if (res2.code === 0) {
+          // 处理登录之后的操作
+          console.log(account.getData(), password.getData());
+        } else {
+          this.isLoading = false;
+          this.error = '账号或者密码错误';
+          return;
+        }
+      } catch (e) {
+        this.isLoading = false;
+        Modal.error({
+          title: '提示',
+          okText: '确认',
+          content: '网络异常，请稍后重试！'
+        });
       }
     }
   }

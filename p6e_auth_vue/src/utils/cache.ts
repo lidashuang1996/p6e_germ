@@ -1,4 +1,18 @@
+export interface AuthModel {
+  code: string;
+  clientId: string;
+  scope: string;
+  state: string;
+  responseType: string;
+  redirectUri: string;
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
+}
 export default class Cache {
+  /** 认证数据 */
+  private static AUTH_NAME = 'P6E_AUTH';
   /** 登录验证码缓存的名称 */
   private static SIGN_IN_CODE_NAME = 'P6E_AUTH@SIGN_IN_CODE';
 
@@ -29,5 +43,26 @@ export default class Cache {
    */
   public static delSignInCodeCache () {
     window.localStorage.removeItem(this.SIGN_IN_CODE_NAME);
+  }
+
+  public static setAuthData (data: AuthModel | null | undefined) {
+    if (data === null || data === undefined) {
+      this.delAuthData();
+    } else {
+      window.localStorage.setItem(this.AUTH_NAME, JSON.stringify(data));
+    }
+  }
+
+  public static getAuthData (): AuthModel | null {
+    const data = window.localStorage.getItem(this.AUTH_NAME);
+    if (data == null) {
+      return null;
+    } else {
+      return JSON.parse(data);
+    }
+  }
+
+  public static delAuthData () {
+    window.localStorage.removeItem(this.AUTH_NAME);
   }
 }

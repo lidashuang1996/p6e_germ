@@ -7,6 +7,8 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable */
+// @ts-ignore
 import QrCode from 'qrcode';
 import { Options, Vue } from 'vue-class-component';
 import { QrCodeComponentInterface } from '../components';

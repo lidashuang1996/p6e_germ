@@ -33,4 +33,12 @@ export default class Base {
   public static http (): HttpRequest {
     return this.$http;
   }
+
+  public static setToken (token: string) {
+    this.$http.initToken(token);
+  }
+
+  public static delToken () {
+    this.$http.initToken(null);
+  }
 }

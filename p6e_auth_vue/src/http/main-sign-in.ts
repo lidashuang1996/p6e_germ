@@ -5,12 +5,12 @@ import Config from '@/config/main';
 const URL = Config.get('url');
 
 /**
- * 登录请求
- * @param data
+ * 账号密码登录
+ * @param data 账号密码登录参数
  * @constructor
  */
 export const ApiSignIn = (data: HttpSignInParam): Promise<HttpBaseResponse<HttpSignInResult>> => {
-  return Base.delayResult(Base.http().get(URL + '/login_account_password.json?q=' + JSON.stringify(data)), 1500);
+  return Base.delayResult(Base.http().post(URL + '/login/account_password', data), 1500);
 };
 
 /**

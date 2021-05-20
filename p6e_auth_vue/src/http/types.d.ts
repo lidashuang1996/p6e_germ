@@ -1,13 +1,15 @@
 declare interface HttpBaseResponse<T> {
   code: number;
   message: string;
-  data?: T;
+  data: T;
 }
 
 /**
  * 登录的请求参数类型
  */
 declare interface HttpSignInParam {
+  /** 记号 */
+  mark: string;
   /** 凭证 */
   voucher: string;
   /** 账号 */
@@ -50,4 +52,24 @@ declare interface HttpCodeSignInResult {
   code: string;
 }
 
+declare interface HttpSignVerificationParam {
+  mark: string;
+}
 
+declare interface HttpSignVerificationResult {
+  code: string;
+  clientId: string;
+  scope: string;
+  state: string;
+  responseType: string;
+  redirectUri: string;
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
+}
+
+declare interface HttpSignVoucherResult {
+  voucher: string;
+  publicKey: string;
+}

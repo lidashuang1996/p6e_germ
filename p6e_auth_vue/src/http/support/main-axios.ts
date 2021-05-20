@@ -11,6 +11,7 @@ export default class MainAxios implements HttpRequest {
   private readonly request: AxiosInstance;
   /** 定义请求管理者 */
   private global: HttpGlobal = new HttpGlobalDefault();
+  private token: string | null = null;
 
   constructor () {
     /** 创建的请求对象 */
@@ -24,6 +25,9 @@ export default class MainAxios implements HttpRequest {
 
     /** 设置添加请求拦截器 */
     this.request.interceptors.request.use((config) => {
+      if (this.token !== null) {
+        config.headers.authentication = 'Bearer ' + this.token;
+      }
       return config;
     }, (error) => {
       return error;
@@ -31,7 +35,6 @@ export default class MainAxios implements HttpRequest {
 
     /** 设置添加响应拦截器 */
     this.request.interceptors.response.use((config) => {
-      console.log(config);
       return config;
     }, (error) => {
       return error;
@@ -77,7 +80,7 @@ export default class MainAxios implements HttpRequest {
     });
   }
 
-  public initToken (): void {
-    console.log('aaa');
+  public initToken (token:string): void {
+    this.token = token;
   }
 }

@@ -4,6 +4,7 @@ import SignIn from '../views/sign/SignIn.vue';
 import SignUp from '../views/sign/SignUp.vue';
 import Notice from '../views/notice/Notice.vue';
 import Me from '../views/me/Me.vue';
+import Auth from '@/utils/auth';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -46,6 +47,16 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+});
+
+// 全局前置守卫
+router.beforeEach(async (to, from, next) => {
+  const b = await Auth.isAuthenticated();
+  if (to.name !== 'sign_in' && !b) {
+    next({ name: 'sign_in' });
+  } else {
+    next();
+  }
 });
 
 export default router;

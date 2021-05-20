@@ -25,7 +25,7 @@ export declare interface HttpRequest {
   /**
    * 初始化 token
    */
-  initToken (): void;
+  initToken (token: string | null): void;
 
   /**
    * get 请求

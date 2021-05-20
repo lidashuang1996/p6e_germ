@@ -8,7 +8,7 @@ export default class Config {
       url: 'http://baidu.com/'
     },
     dev: {
-      url: '/moke'
+      url: 'http://localhost'
     }
   };
 

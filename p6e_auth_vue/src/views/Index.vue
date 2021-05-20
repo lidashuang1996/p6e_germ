@@ -59,7 +59,7 @@ export default class Index extends Vue {
   /**
    * 勾子函数
    */
-  public mounted (): void {
+  public async mounted () {
     /** 窗体的样式的计算方法 */
     const f = (e: { width: number, height: number }) => {
       if (e.height > 750) {

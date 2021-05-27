@@ -26,6 +26,7 @@ declare interface HttpSignInResult {
 }
 
 declare interface HttpObtainCodeParam {
+  mark: string;
   account: string;
 }
 
@@ -68,8 +69,41 @@ declare interface HttpSignVerificationResult {
   tokenType: string;
   expiresIn: number;
 }
-
+declare interface HttpSignVoucherParam {
+  mark: string;
+}
 declare interface HttpSignVoucherResult {
   voucher: string;
   publicKey: string;
+}
+
+declare interface HttpSignInCodeParam {
+  mark: string;
+  code: string;
+  account: string;
+}
+
+
+declare interface HttpSignInCodeResult {
+
+}
+
+
+declare interface HttpSignInQrCodeParam {
+  mark: string;
+  code?: string;
+}
+
+declare interface HttpSignInQrCodeResult {
+  content: string;
+}
+
+
+
+declare interface HttpSignInOtherParam {
+  mark: string;
+}
+
+declare interface HttpSignInOtherResult {
+  content: string;
 }

@@ -26,7 +26,8 @@ export default class MainAxios implements HttpRequest {
     /** 设置添加请求拦截器 */
     this.request.interceptors.request.use((config) => {
       if (this.token !== null) {
-        config.headers.authentication = 'Bearer ' + this.token;
+        console.log(this.token);
+        config.headers.Authorization = 'Bearer ' + this.token;
       }
       return config;
     }, (error) => {
@@ -80,7 +81,7 @@ export default class MainAxios implements HttpRequest {
     });
   }
 
-  public initToken (token:string): void {
+  public initToken (token: string): void {
     this.token = token;
   }
 }

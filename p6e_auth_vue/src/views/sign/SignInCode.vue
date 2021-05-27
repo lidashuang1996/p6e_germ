@@ -13,11 +13,13 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable */
+// @ts-ignore
+const G_MARK = window['P6E_OAUTH2_DATA'].mark;
 import {
   LoadingOutlined
 } from '@ant-design/icons-vue';
-import { ApiQrCode, ApiQrData } from '@/http/main-sign-in';
-import CommonUtil from '@/utils/CommonUtil';
+import { ApiSignInQrCode, ApiSignInQrData } from '@/http/main-sign-in';
 import { Options, Vue } from 'vue-class-component';
 import { QrCodeComponentInterface } from '@/components/components';
 import QrCodeComponent from '@/components/QrCode/QrCodeComponent.vue';
@@ -32,19 +34,27 @@ export default class SignInCode extends Vue {
   /** 是否加载中 */
   private isLoading = true;
 
+  private qrCode = '';
+  private loopTimeout: any = null;
+  private refreshTimeout: any = null;
+
+
   /**
    * 进入页面就加载二维码的数据
    */
   public async mounted () {
     this.isLoading = true;
-    const res = await ApiQrCode({ account: '' }, 2000);
+    await this.refreshQrCode();
     this.isLoading = false;
-    if (res.code === 0) {
-      this.getQrData();
-      const qrCodeComponent = this.$refs.refQrCodeComponent as QrCodeComponentInterface;
-      qrCodeComponent.qrCode('1321321311');
-      // 每隔 30 S 刷新一次二维码
-      setTimeout(() => this.refreshQrCode(), 5000);
+    this.getQrData();
+  }
+
+  public unmounted () {
+    if (this.loopTimeout != null) {
+      clearTimeout(this.loopTimeout);
+    }
+    if (this.refreshTimeout != null) {
+      clearTimeout(this.refreshTimeout);
     }
   }
 
@@ -52,12 +62,13 @@ export default class SignInCode extends Vue {
    * 刷新二维码
    */
   public async refreshQrCode () {
-    const res = await ApiQrCode({ account: '' });
+    const res = await ApiSignInQrCode({ mark: G_MARK });
     if (res.code === 0) {
       const qrCodeComponent = this.$refs.refQrCodeComponent as QrCodeComponentInterface;
-      qrCodeComponent.qrCode(CommonUtil.uuid());
-      console.log('312312321 ==> ', qrCodeComponent);
+      this.qrCode = res.data.content.split('?code=')[1];
+      qrCodeComponent.qrCode(res.data.content);
     }
+    this.refreshTimeout = setTimeout(() => this.refreshQrCode(), 60000);
   }
 
   /**
@@ -65,12 +76,13 @@ export default class SignInCode extends Vue {
    */
   private getQrData () {
     const f = async () => {
-      const res = await ApiQrData({ account: '' });
-      if (res.code !== 0) {
-        console.log('正确  success ...');
-      } else {
-        setTimeout(() => f(), 1200);
+      if (this.qrCode !== '') {
+        const res = await ApiSignInQrData({ mark: G_MARK, code: this.qrCode });
+        if (res.code === 0) {
+          console.log('正确  success ...');
+        }
       }
+      this.loopTimeout = setTimeout(() => f(), 2200);
     };
     f();
   }

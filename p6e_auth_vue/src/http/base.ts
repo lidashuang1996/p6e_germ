@@ -41,4 +41,15 @@ export default class Base {
   public static delToken () {
     this.$http.initToken(null);
   }
+
+  public static objectToKeyValueString (data: any) {
+    let r = '';
+    for (let key in data) {
+      if (data.hasOwnProperty(key)) {
+        const value = data[key];
+        r += '&' + key + '=' + value;
+      }
+    }
+    return r.length > 0 ? ('?' + r.substring(1)) : '';
+  }
 }

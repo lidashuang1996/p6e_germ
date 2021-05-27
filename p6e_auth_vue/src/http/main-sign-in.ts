@@ -18,8 +18,8 @@ export const ApiSignIn = (data: HttpSignInParam): Promise<HttpBaseResponse<HttpS
  * @param data
  * @constructor
  */
-export const ApiCode = (data: HttpObtainCodeParam): Promise<HttpBaseResponse<HttpObtainCodeResult>> => {
-  return Base.http().get(URL + '/login_send_code.json?q=' + JSON.stringify(data));
+export const ApiSignInObtainCode = (data: HttpObtainCodeParam): Promise<HttpBaseResponse<HttpObtainCodeResult>> => {
+  return Base.http().get(URL + '/login/nr_code' + Base.objectToKeyValueString(data));
 };
 
 /**
@@ -27,12 +27,12 @@ export const ApiCode = (data: HttpObtainCodeParam): Promise<HttpBaseResponse<Htt
  * @param data
  * @constructor
  */
-export const ApiCodeSignIn = (data: HttpCodeSignInParam): Promise<HttpBaseResponse<HttpCodeSignInResult>> => {
-  return Base.delayResult(Base.http().get(URL + '/login_code.json?q=' + JSON.stringify(data)), 1500);
+export const ApiSignInCode = (data: HttpSignInCodeParam): Promise<HttpBaseResponse<HttpSignInCodeResult>> => {
+  return Base.delayResult(Base.http().post(URL + '/login/nr_code/data', data), 1500);
 };
 
-export const ApiQrCode = (data: HttpObtainCodeParam, time = 0): Promise<HttpBaseResponse<HttpObtainCodeResult>> => {
-  return Base.delayResult(Base.http().get(URL + '/login_send_code.json?q=' + JSON.stringify(data)), time);
+export const ApiSignInQrCode = (data: HttpSignInQrCodeParam): Promise<HttpBaseResponse<HttpSignInQrCodeResult>> => {
+  return Base.http().get(URL + '/login/qr_code' + Base.objectToKeyValueString(data));
 };
 
 /**
@@ -40,6 +40,18 @@ export const ApiQrCode = (data: HttpObtainCodeParam, time = 0): Promise<HttpBase
  * @param data
  * @constructor
  */
-export const ApiQrData = (data: HttpObtainCodeParam): Promise<HttpBaseResponse<HttpObtainCodeResult>> => {
-  return Base.http().get(URL + '/login_send_code.json?q=' + JSON.stringify(data));
+export const ApiSignInQrData = (data: HttpSignInQrCodeParam): Promise<HttpBaseResponse<HttpSignInQrCodeResult>> => {
+  return Base.http().get(URL + '/login/qr_code/data' + Base.objectToKeyValueString(data));
+};
+
+export const ApiSignInQq = (data: HttpSignInOtherParam): Promise<HttpBaseResponse<HttpSignInOtherResult>> => {
+  return Base.http().get(URL + '/login/qq' + Base.objectToKeyValueString(data));
+};
+
+export const ApiSignInWeChat = (data: HttpSignInOtherParam): Promise<HttpBaseResponse<HttpSignInOtherResult>> => {
+  return Base.http().get(URL + '/login/we_chat' + Base.objectToKeyValueString(data));
+};
+
+export const ApiSignInSina = (data: HttpSignInOtherParam): Promise<HttpBaseResponse<HttpSignInOtherResult>> => {
+  return Base.http().get(URL + '/login/sina' + Base.objectToKeyValueString(data));
 };

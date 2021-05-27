@@ -28,6 +28,8 @@
 /* eslint-disable */
 // @ts-ignore
 const G_MARK = window['P6E_OAUTH2_DATA'].mark;
+import Cache, { AuthModel } from '@/utils/cache';
+import Auth from '@/utils/auth';
 import JSEncrypt from 'jsencrypt';
 import { Modal } from 'ant-design-vue';
 import { ApiSignIn } from '@/http/main-sign-in';
@@ -66,7 +68,7 @@ export default class SignAccountPassword extends Vue {
         this.isLoading = true;
         // 获取登录的凭证
         if (this.voucher === '') {
-          const res1 = await ApiSignVoucher();
+          const res1 = await ApiSignVoucher({ mark: G_MARK });
           if (res1.code === 0) {
             this.voucher = res1.data.voucher;
             this.publicKey = res1.data.publicKey;
@@ -93,7 +95,10 @@ export default class SignAccountPassword extends Vue {
         });
         if (res2.code === 0) {
           // 处理登录之后的操作
-          console.log(account.getData(), password.getData());
+          Cache.setAuthData(res2.data as AuthModel);
+          // 去新的页面
+          await Auth.init();
+          await this.$router.push({ name: 'notice' });
         } else {
           this.isLoading = false;
           this.error = '账号或者密码错误';

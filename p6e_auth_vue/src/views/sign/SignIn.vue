@@ -17,13 +17,16 @@
       <div class="other-content">
         <p class="other-nav-wx" @click.stop="wechat"><WechatOutlined/><span>微信</span></p>
         <p class="other-nav-qq" @click.stop="qq"><QqOutlined/><span>QQ</span></p>
-        <p class="other-nav-wb" @click.stop="weibo"><WeiboCircleOutlined/><span>微博</span></p>
+        <p class="other-nav-wb" @click.stop="sina"><WeiboCircleOutlined/><span>微博</span></p>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+/* eslint-disable */
+// @ts-ignore
+const G_MARK = window['P6E_OAUTH2_DATA'].mark;
 import {
   QqOutlined,
   QrcodeOutlined,
@@ -35,6 +38,7 @@ import { Modal } from 'ant-design-vue';
 import SignInCode from './SignInCode.vue';
 import SignInAccount from './SignInAccount.vue';
 import { Options, Vue } from 'vue-class-component';
+import { ApiSignInQq, ApiSignInWeChat, ApiSignInSina } from '@/http/main-sign-in';
 
 @Options({
   components: {
@@ -65,37 +69,52 @@ export default class SignIn extends Vue {
   /**
    * QQ 第三方登录
    */
-  private qq (): void {
-    Modal.warning({
-      centered: true,
-      title: '抱歉',
-      okText: '确定',
-      content: '第三方QQ账号登录暂未开通'
-    });
+  private async qq () {
+    const res = await ApiSignInQq({ mark: G_MARK });
+    if (res.code === 0) {
+      window.location.href = res.data.content;
+    } else {
+      Modal.warning({
+        centered: true,
+        title: '抱歉',
+        okText: '确定',
+        content: '第三方QQ账号登录暂未开通'
+      });
+    }
   }
 
   /**
    * 微信第三方登录
    */
-  private wechat (): void {
-    Modal.warning({
-      centered: true,
-      title: '抱歉',
-      okText: '确定',
-      content: '第三方微信账号登录暂未开通'
-    });
+  private async wechat () {
+    const res = await ApiSignInWeChat({ mark: G_MARK })
+    if (res.code === 0) {
+      window.location.href = res.data.content;
+    } else {
+      Modal.warning({
+        centered: true,
+        title: '抱歉',
+        okText: '确定',
+        content: '第三方微信账号登录暂未开通'
+      });
+    }
   }
 
   /**
    * 微博第三方登录
    */
-  private weibo (): void {
-    Modal.warning({
-      centered: true,
-      title: '抱歉',
-      okText: '确定',
-      content: '第三方微博账号登录暂未开通'
-    });
+  private async sina () {
+    const res = await ApiSignInSina({ mark: G_MARK })
+    if (res.code === 0) {
+      // window.location.href = res.data.content;
+    } else {
+      Modal.warning({
+        centered: true,
+        title: '抱歉',
+        okText: '确定',
+        content: '第三方微博账号登录暂未开通'
+      });
+    }
   }
 }
 </script>

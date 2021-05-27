@@ -7,8 +7,8 @@ const URL = Config.get('url');
 /**
  * 凭证<证书公钥>获取
  */
-export const ApiSignVoucher = (): Promise<HttpBaseResponse<HttpSignVoucherResult>> => {
-  return Base.http().get(URL + '/login/voucher');
+export const ApiSignVoucher = (data: HttpSignVoucherParam): Promise<HttpBaseResponse<HttpSignVoucherResult>> => {
+  return Base.http().get(URL + '/login/secret_voucher?mark=' + data.mark);
 };
 
 /**

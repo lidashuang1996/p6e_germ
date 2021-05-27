@@ -25,13 +25,13 @@
 <script lang="ts">
 /* eslint-disable */
 // @ts-ignore
-const voucher = window['P6E_AUTH_CERTIFICATE_VOUCHER'];
-
+const G_MARK = window['P6E_OAUTH2_DATA'].mark;
+import { Modal } from 'ant-design-vue';
 import { Options, Vue } from 'vue-class-component';
 import { CodeInputInterface, InputInterface } from '@/components/components';
 import InputCodeComponent from '@/components/Input/InputCodeComponent.vue';
 import InputAccountComponent from '@/components/Input/InputAccountComponent.vue';
-import { ApiCode, ApiCodeSignIn } from '@/http/main-sign-in';
+import { ApiSignInObtainCode, ApiSignInCode } from '@/http/main-sign-in';
 
 @Options({
   components: {
@@ -49,16 +49,24 @@ export default class SignAccountNoPassword extends Vue {
    * 确认的方法
    */
   public async confirm () {
-    const code = this.$refs.refInputCode as CodeInputInterface;
-    const account = this.$refs.refInputAccount as InputInterface;
-    if (account.test() && code.test()) {
-      // 发送登录请求
-      this.isLoading = true;
-      const res = await ApiCodeSignIn({ voucher: voucher, code: code.getData(), account: account.getData() });
-      this.isLoading = false;
-      if (res.code === 0) {
-        // 处理登录之后的操作
-        console.log(account.getData(), code.getData());
+    if (!this.isLoading) {
+      const code = this.$refs.refInputCode as CodeInputInterface;
+      const account = this.$refs.refInputAccount as InputInterface;
+      if (account.test() && code.test()) {
+        // 发送登录请求
+        this.isLoading = true;
+        const res = await ApiSignInCode({
+          mark: G_MARK,
+          code: code.getData(),
+          account: account.getData()
+        });
+        this.isLoading = false;
+        if (res.code === 0) {
+          // 处理登录之后的操作
+          console.log(account.getData(), code.getData());
+        } else {
+          this.error = '账号或者密码错误';
+        }
       }
     }
   }
@@ -71,8 +79,14 @@ export default class SignAccountNoPassword extends Vue {
     const account = this.$refs.refInputAccount as InputInterface;
     if (account.test()) {
       code.countdown(60);
-      const res = await ApiCode({ account: account.getData() });
-      console.log('发送验证码..' + res);
+      const res = await ApiSignInObtainCode({ mark: G_MARK, account: account.getData() });
+      if (res.code !== 0) {
+        Modal.error({
+          title: '提示',
+          okText: '确认',
+          content: '网络异常，请稍后重试！'
+        });
+      }
     }
   }
 

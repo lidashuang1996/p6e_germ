@@ -16,6 +16,20 @@ export default class Cache {
   /** 登录验证码缓存的名称 */
   private static SIGN_IN_CODE_NAME = 'P6E_AUTH@SIGN_IN_CODE';
 
+  private static DATA: any = {};
+
+  public static setData (key: string, value: any) {
+    this.DATA[key] = value;
+  }
+
+  public static getData (key: string): any {
+    return this.DATA[key];
+  }
+
+  public static delData (key: string) {
+    delete this.DATA[key];
+  }
+
   /**
    * 设置登录里面获取验证码的缓存
    * @param num 缓存时间

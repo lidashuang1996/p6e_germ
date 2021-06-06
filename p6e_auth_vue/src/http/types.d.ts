@@ -31,7 +31,8 @@ declare interface HttpObtainCodeParam {
 }
 
 declare interface HttpObtainCodeResult {
-  code: string;
+  account: string;
+  content: string;
 }
 
 /**
@@ -79,7 +80,8 @@ declare interface HttpSignVoucherResult {
 
 declare interface HttpSignInCodeParam {
   mark: string;
-  code: string;
+  codeKey: string;
+  codeContent: string;
   account: string;
 }
 

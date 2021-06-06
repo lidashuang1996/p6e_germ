@@ -26,6 +26,7 @@
 /* eslint-disable */
 // @ts-ignore
 const G_MARK = window['P6E_OAUTH2_DATA'].mark;
+import Utils from '@/utils/main';
 import { Modal } from 'ant-design-vue';
 import { Options, Vue } from 'vue-class-component';
 import { CodeInputInterface, InputInterface } from '@/components/components';
@@ -40,10 +41,20 @@ import { ApiSignInObtainCode, ApiSignInCode } from '@/http/main-sign-in';
   }
 })
 export default class SignAccountNoPassword extends Vue {
+
   /** 错误提示文本 */
   public error = '';
   /** 登录是否加载中 */
   public isLoading = false;
+  private readonly codeCacheName: string = 'P6E_NR_CODE_LOGIN';
+  private code: { account: string; content: string; } | null = null;
+
+  public mounted () {
+    const code = Utils.Cache.getData(this.codeCacheName);
+    if (code !== null && code !== undefined) {
+      this.code = code;
+    }
+  }
 
   /**
    * 确认的方法
@@ -52,12 +63,13 @@ export default class SignAccountNoPassword extends Vue {
     if (!this.isLoading) {
       const code = this.$refs.refInputCode as CodeInputInterface;
       const account = this.$refs.refInputAccount as InputInterface;
-      if (account.test() && code.test()) {
+      if (account.test() && code.test() && this.code !== null) {
         // 发送登录请求
         this.isLoading = true;
         const res = await ApiSignInCode({
           mark: G_MARK,
-          code: code.getData(),
+          codeKey: this.code.content,
+          codeContent: code.getData(),
           account: account.getData()
         });
         this.isLoading = false;
@@ -80,7 +92,11 @@ export default class SignAccountNoPassword extends Vue {
     if (account.test()) {
       code.countdown(60);
       const res = await ApiSignInObtainCode({ mark: G_MARK, account: account.getData() });
-      if (res.code !== 0) {
+      if (res.code === 0) {
+        /** 缓存数据 */
+        this.code = res.data;
+        Utils.Cache.setData(this.codeCacheName, res.data);
+      } else {
         Modal.error({
           title: '提示',
           okText: '确认',

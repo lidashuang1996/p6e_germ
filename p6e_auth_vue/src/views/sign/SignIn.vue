@@ -55,7 +55,7 @@ export default class SignIn extends Vue {
   /**
    * QC QrCode 二维码
    * AP Account/Password 账号密码
-   * VC Verification code 手机验证码
+   * VC Verification Code 手机//邮箱 验证码
    */
   private mode = 'AP';
 
@@ -106,7 +106,7 @@ export default class SignIn extends Vue {
   private async sina () {
     const res = await ApiSignInSina({ mark: G_MARK })
     if (res.code === 0) {
-      // window.location.href = res.data.content;
+      window.location.href = res.data.content;
     } else {
       Modal.warning({
         centered: true,

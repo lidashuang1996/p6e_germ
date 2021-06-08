@@ -1,0 +1,16 @@
+server:
+  port: 16000
+
+
+
+# p6e 的配置
+p6e:
+  cache:
+    redis:
+      source:
+        A:
+          host: 1.116.2.148
+          port: 6379
+          database: 2
+          password: Redis1234!@#$
+

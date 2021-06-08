@@ -1,24 +1,12 @@
 <template>
   <!-- p6e auth notice -->
   <div class="notice">
-    <div class="notice-title">提示</div>
     <div class="notice-content">
       <div class="notice-content-img">
-        <div class="notice-content-left">
-          <img src="../../assets/logo/logo_a.png" alt="LEFT_LOGO"/>
-          <span>1111</span>
-        </div>
-        <div class="notice-content-interaction">
-          <SwapRightOutlined class="interaction-top"/>
-          <SwapRightOutlined class="interaction-bottom"/>
-        </div>
-        <div class="notice-content-right">
-          <img src="../../assets/logo/logo_b.png" alt="RIGHT_LOGO"/>
-          <span>2222</span>
-        </div>
+        <img :src="icon" alt="LOGO"/>
       </div>
       <div class="notice-content-text">
-        <p>你正在进行 P6E 将授权给 VUE，确认代表同意相关协议。</p>
+        <p>你正在进行授权给 <span>「 <span v-text="name"></span> 」</span>，确认代表同意相关协议。</p>
       </div>
     </div>
     <div class="notice-button">
@@ -34,25 +22,52 @@
 </template>
 
 <script lang="ts">
-import {
-  SwapRightOutlined
-} from '@ant-design/icons-vue';
+import Utils from '@/utils/utils';
+import { Modal } from 'ant-design-vue';
 import { Options, Vue } from 'vue-class-component';
+import { ApiSignInConfirm } from '@/http/main-sign-in';
 
-@Options({
-  components: {
-    SwapRightOutlined
-  }
-})
-/* eslint-disable */
+@Options({})
 export default class Notice extends Vue {
   /** 是否为加载中 */
-  public isLoading = false;
+  private isLoading = false;
+
+  /** 客户端信息 */
+  private icon = '';
+  private name = '';
+
+  /**
+   * 钩子函数
+   */
+  public mounted () {
+    /* eslint-disable */
+    // @ts-ignore
+    const oauth2 = window['P6E_OAUTH2_DATA'];
+    if (Utils.isNotEmpty(oauth2)) {
+      this.icon = oauth2.icon;
+      this.name = oauth2.name;
+    }
+  }
+
   /**
    * 登录确认的方法
    */
   public async confirm () {
-    this.isLoading = true;
+    const code = Utils.getUrlParam('code');
+    if (Utils.isNotEmpty(code)) {
+      this.isLoading = true;
+      const res = await ApiSignInConfirm({ code: code as string });
+      this.isLoading = false;
+      if (res.code === 0) {
+        window.location.href = res.data;
+      } else {
+        Modal.error({
+          title: '提示',
+          okText: '确认',
+          content: res.message
+        });
+      }
+    }
   }
 }
 </script>

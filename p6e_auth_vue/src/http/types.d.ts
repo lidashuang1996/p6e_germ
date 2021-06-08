@@ -109,3 +109,10 @@ declare interface HttpSignInOtherParam {
 declare interface HttpSignInOtherResult {
   content: string;
 }
+
+
+declare interface HttpSignInConfirmParam {
+  code: string;
+}
+
+

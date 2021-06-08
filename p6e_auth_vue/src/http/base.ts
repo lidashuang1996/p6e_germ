@@ -34,17 +34,18 @@ export default class Base {
     return this.$http;
   }
 
-  public static setToken (token: string) {
+  public static setToken (token: string): void {
     this.$http.initToken(token);
   }
 
-  public static delToken () {
+  public static delToken (): void {
     this.$http.initToken(null);
   }
 
-  public static objectToKeyValueString (data: any) {
+  /* eslint-disable */
+  public static objectToKeyValueString (data: any): string {
     let r = '';
-    for (let key in data) {
+    for (const key in data) {
       if (data.hasOwnProperty(key)) {
         const value = data[key];
         r += '&' + key + '=' + value;

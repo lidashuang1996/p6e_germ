@@ -7,10 +7,3 @@ import router from './router';
 import './style/main.scss';
 // app.config.productionTip = false;
 createApp(App).use(router).use(Antd).mount('#app');
-
-/* eslint-disable */
-// @ts-ignore
-window['P6E_AUTH_CERTIFICATE_VOUCHER'] = '3131XXXdadasda321312dasdas';
-// @ts-ignore
-window['P6E_AUTH_CERTIFICATE_PUBLIC_KEY'] = '3131XXXdadasda321312dasdas';
-

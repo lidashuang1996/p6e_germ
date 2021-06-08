@@ -22,6 +22,7 @@
   }
   .index-logo {
     width: 128px;
+    height: 128px;
     margin: 0 auto;
     padding: 16px 0 0;
   }
@@ -35,6 +36,11 @@
     box-sizing: border-box;
     background-color: $index-content-background-color;
     margin: 16px auto 16px;
+  }
+  .index-content-null {
+    width: 400px;
+    height: 493px;
+    padding-top: 60px;
   }
   .index-footer {
     padding: 16px 0;

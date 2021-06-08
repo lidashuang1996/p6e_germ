@@ -5,7 +5,7 @@ export default class Config {
   /** 配置文件信息 */
   private static CONFIG_DATA: any = {
     pro: {
-      url: 'http://baidu.com/'
+      url: 'http://localhost'
     },
     dev: {
       url: 'http://localhost'

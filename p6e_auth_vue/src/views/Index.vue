@@ -8,9 +8,7 @@
           <img src="../assets/logo/logo.png" alt="LOGO"/>
         </div>
         <!-- main -->
-        <div class="index-content">
-          <router-view/>
-        </div>
+        <IndexContent></IndexContent>
         <!-- footer -->
         <div class="index-footer" :style="marginStyle">
           <p class="index-footer-row">
@@ -45,9 +43,14 @@
 
 <script lang="ts">
 import Window from '@/utils/window';
+import IndexContent from './IndexContent.vue';
 import { Options, Vue } from 'vue-class-component';
 
-@Options({})
+@Options({
+  components: {
+    IndexContent
+  }
+})
 export default class Index extends Vue {
   /** 是否显示主体内容 */
   public isShow = false;

@@ -36,6 +36,12 @@ export default class MainAxios implements HttpRequest {
 
     /** 设置添加响应拦截器 */
     this.request.interceptors.response.use((config) => {
+      const f = config.config.url;
+      const s = config.request.responseURL;
+      // 发送的 url 和接收的 url 不同则表示为重定向
+      if (f !== s) {
+        window.location.href = s;
+      }
       return config;
     }, (error) => {
       return error;

@@ -55,3 +55,7 @@ export const ApiSignInWeChat = (data: HttpSignInOtherParam): Promise<HttpBaseRes
 export const ApiSignInSina = (data: HttpSignInOtherParam): Promise<HttpBaseResponse<HttpSignInOtherResult>> => {
   return Base.http().get(URL + '/login/sina' + Base.objectToKeyValueString(data));
 };
+
+export const ApiSignInConfirm = (data: HttpSignInConfirmParam): Promise<HttpBaseResponse<string>> => {
+  return Base.http().get(URL + '/auth/confirm' + Base.objectToKeyValueString(data));
+};

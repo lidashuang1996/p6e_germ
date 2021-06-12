@@ -12,7 +12,7 @@
       />
     </label>
     <label class="button">
-      <a-button type="link" v-if="codeDateTime === 0" @click.stop="obtainCode">获取登录验证码</a-button>
+      <a-button type="link" v-if="codeDateTime === 0" @click.stop="obtainCode">获取验证码</a-button>
       <a-button type="link" v-if="codeDateTime !== 0" :disabled="true">{{ codeDateTime }} 秒后可重发</a-button>
     </label>
     <p class="input-error" v-if="error !== ''" v-text="'* ' + error"></p>

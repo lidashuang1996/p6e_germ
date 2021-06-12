@@ -16,6 +16,8 @@
                   @click.stop="confirm">
           <span v-if="!isLoading">登 录</span>
         </a-button>
+        <!-- 忘记密码 -->
+        <a-button type="link" class="forget-password">忘记密码？</a-button>
         <!-- 错误提示 -->
         <p class="error" v-if="error !== ''" v-text="'* ' + error"></p>
       </div>
@@ -98,7 +100,6 @@ export default class SignAccountPassword extends Vue {
           Cache.setAuthData(res2.data as AuthModel);
           // 去新的页面
           await Auth.init();
-          await this.$router.push({ name: 'notice' });
         } else {
           this.isLoading = false;
           this.error = '账号或者密码错误';

@@ -1,6 +1,6 @@
 <template>
   <!-- p6e auth sign up -->
-  <div class="sign-up" style="min-height: 493px;">
+  <div class="sign-forget-password" style="min-height: 493px;">
     <div class="set-initial-password" v-show="false">
       <div class="title">设置密码</div>
       <div class="content">初次登录的账号「手机号/邮箱」需要设置初始密码，设置初始密码以后可以通过账号密码登录的方法，进行登录操作。</div>
@@ -22,8 +22,8 @@
       </div>
     </div>
     <div class="bind-account">
-      <div class="title">绑定账号</div>
-      <div class="content">使用第三方平台初次登录时候，需要绑定一下账号「手机号/邮箱」，绑定账号后可以通过第三方平台直接登录绑定账号。</div>
+      <div class="title">忘记密码</div>
+      <div class="content">使用第三方平台初次登录时候，需要绑定一下账号「手机号/邮箱」，绑定账号后可以通过账号登录或者第三方平台直接登录绑定账号。</div>
       <!-- 账号 -->
       <InputAccountComponent class="input-account"  @keyup.enter="confirm"/>
       <!-- 验证码 -->
@@ -57,7 +57,7 @@ import InputPasswordComponent from '@/components/Input/InputPasswordComponent.vu
   }
 })
 /* eslint-disable */
-export default class SignUp extends Vue {
+export default class SignForgetPassword extends Vue {
   /** 错误提示文本 */
   public error = '';
   /** 登录是否加载中 */

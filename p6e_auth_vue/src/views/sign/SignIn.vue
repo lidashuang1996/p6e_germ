@@ -4,7 +4,7 @@
     <!-- 登录模式切换 -->
     <div class="sign-in-mode-switch"
          @click.stop="signInModeSwitch()"
-         :title="mode === 'AP' ? '扫码登录' : '账号登录'">
+         :title="mode === 'AP' ? $t('sign.in.qc.title') : $t('sign.in.ap.title')">
       <QrcodeOutlined v-if="mode === 'AP'"/>
       <AppstoreAddOutlined v-if="mode === 'QC'"/>
     </div>
@@ -13,20 +13,37 @@
     <sign-in-account v-if="mode === 'AP'"/>
     <!-- 其它的第三方授权登录 -->
     <div class="sign-in-mode-other">
-      <div class="other-title">社交账号登录</div>
+      <div class="other-title">
+        <span v-text="$t('sign.other.title')"></span>
+      </div>
       <div class="other-content">
-        <p class="other-nav-wx" @click.stop="wechat"><WechatOutlined/><span>微信</span></p>
-        <p class="other-nav-qq" @click.stop="qq"><QqOutlined/><span>QQ</span></p>
-        <p class="other-nav-wb" @click.stop="sina"><WeiboCircleOutlined/><span>微博</span></p>
+        <template :key="index"
+                  v-for="(item, index) in $tm('sign.other.list')">
+          <p class="other-nav-wx"
+             @click.stop="wechat(item.name)"
+             v-if="item.type === 'WC'">
+            <WechatOutlined/>
+            <span v-text="item.name"></span>
+          </p>
+          <p class="other-nav-qq"
+             @click.stop="qq(item.name)"
+             v-if="item.type === 'QQ'">
+            <QqOutlined/>
+            <span v-text="item.name"></span>
+          </p>
+          <p class="other-nav-wb"
+             @click.stop="sina(item.name)"
+             v-if="item.type === 'SA'">
+            <WeiboCircleOutlined/>
+            <span v-text="item.name"></span>
+          </p>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-/* eslint-disable */
-// @ts-ignore
-const G_MARK = window['P6E_OAUTH2_DATA'].mark;
 import {
   QqOutlined,
   QrcodeOutlined,
@@ -36,9 +53,13 @@ import {
 } from '@ant-design/icons-vue';
 import { Modal } from 'ant-design-vue';
 import SignInCode from './SignInCode.vue';
+import { Global, Utils } from '@/utils/main';
 import SignInAccount from './SignInAccount.vue';
 import { Options, Vue } from 'vue-class-component';
 import { ApiSignInQq, ApiSignInWeChat, ApiSignInSina } from '@/http/main-sign-in';
+
+/** 全局读取的 MARK */
+const G_MARK = Global.getOauth2().mark;
 
 @Options({
   components: {
@@ -69,51 +90,49 @@ export default class SignIn extends Vue {
   /**
    * QQ 第三方登录
    */
-  private async qq () {
-    const res = await ApiSignInQq({ mark: G_MARK });
-    if (res.code === 0) {
-      window.location.href = res.data.content;
-    } else {
-      Modal.warning({
-        centered: true,
-        title: '抱歉',
-        okText: '确定',
-        content: '第三方QQ账号登录暂未开通'
-      });
-    }
+  private async qq (name: string) {
+    this.otherLogin(await ApiSignInQq({ mark: G_MARK }), name);
   }
 
   /**
    * 微信第三方登录
    */
-  private async wechat () {
-    const res = await ApiSignInWeChat({ mark: G_MARK })
-    if (res.code === 0) {
-      window.location.href = res.data.content;
-    } else {
-      Modal.warning({
-        centered: true,
-        title: '抱歉',
-        okText: '确定',
-        content: '第三方微信账号登录暂未开通'
-      });
-    }
+  private async wechat (name: string) {
+    this.otherLogin(await ApiSignInWeChat({ mark: G_MARK }), name);
   }
 
   /**
    * 微博第三方登录
    */
-  private async sina () {
-    const res = await ApiSignInSina({ mark: G_MARK })
+  private async sina (name: string) {
+    this.otherLogin(await ApiSignInSina({ mark: G_MARK }), name);
+  }
+
+  /**
+   * 第三方账号登录
+   */
+  private otherLogin (res: { code: number; message: string; data: { content: string } }, name: string) {
     if (res.code === 0) {
       window.location.href = res.data.content;
     } else {
-      Modal.warning({
-        centered: true,
-        title: '抱歉',
-        okText: '确定',
-        content: '第三方微博账号登录暂未开通'
-      });
+      const message = res.message;
+      if (message === 'SERVICE_NOT_ENABLE') {
+        const ree = this.$tm('error.SERVICE_NOT_ENABLE') as { [ key: string ]: string };
+        Modal.warning({
+          centered: true,
+          title: ree.title,
+          okText: ree.okText,
+          content: Utils.translate(ree.content, { platform: name })
+        });
+      } else {
+        const ree = this.$tm('error.' + res.message) as { [ key: string ]: string };
+        Modal.error({
+          centered: true,
+          title: ree.title,
+          okText: ree.okText,
+          content: ree.content
+        });
+      }
     }
   }
 }

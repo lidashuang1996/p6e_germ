@@ -1,0 +1,257 @@
+$sign-color: #404040;
+
+// 登录/注册 盒子
+.sign-in {
+  position: relative;
+
+  // 其它方法登录 （二维码/账号密码）
+  .sign-in-mode-switch {
+    position: absolute;
+    width: 62px;
+    height: 62px;
+    background: #226AF6;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+      color: #ffffff;
+      font-size: 48px;
+    }
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-bottom: 62px solid #ffffff;
+      border-right: 62px solid transparent;
+    }
+  }
+
+  // 其它方式登录 （第三方平台）
+  .sign-in-mode-other {
+    padding: 24px 6px 20px;
+    margin: 0 24px;
+    box-sizing: border-box;
+    color: #8590a6;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #e8e8e8;
+    .other-content {
+      display: flex;
+      align-items: center;
+      span {
+        margin-left: 8px;
+      }
+      svg {
+        font-size: 24px;
+      }
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 12px;
+      }
+      .other-nav-wx {
+        cursor: pointer;
+        svg {
+          color: rgb(96, 200, 77);
+        }
+      }
+      .other-nav-qq {
+        cursor: pointer;
+        svg {
+          color: rgb(80, 200, 253);
+        }
+      }
+      .other-nav-wb {
+        cursor: pointer;
+        svg {
+          color: rgb(251, 102, 34);
+        }
+      }
+    }
+  }
+}
+
+// 登录/注册 容器
+.sign-container {}
+
+// 二维码登录
+.sign-in-code {
+  .title {
+    font-size: 28px;
+    color: $sign-color;
+    text-align: center;
+    padding: 48px 0 24px;
+  }
+  .subtitle {
+    font-size: 16px;
+    color: $sign-color;
+    padding: 24px 0;
+    text-align: center;
+  }
+  .sign-in-code-content {
+    width: 100%;
+    height: 235px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .code-loading {
+      font-size: 36px;
+      color: #666666;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+    }
+    .code-component-box {
+      position: relative;
+      .code-component-expiration {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.5);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        color: #ffffff;
+        text-align: center;
+        font-size: 16px;
+        padding: 85px 0;
+        line-height: 25px;
+      }
+    }
+  }
+}
+
+// 账号密码登录
+.sign-in-account {
+  .sign-in-account-tab {
+    width: 100%;
+    padding: 12px 24px 0;
+    height: 68px;
+    .active {
+      font-weight: 800;
+      &:after {
+        content: '';
+        width: 100%;
+        height: 3px;
+        background: #226AF6;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+    }
+    ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      height: 100%;
+      li {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 24px;
+        cursor: pointer;
+        font-size: 16px;
+        position: relative;
+      }
+    }
+  }
+
+  .sign-in-account-content {
+    margin-top: 24px;
+    padding: 0 24px 0;
+    width: 100%;
+    height: 240px;
+  }
+
+  .sign-in-account-agreement {
+    color: #666666;
+    font-size: 14px;
+    padding: 24px 24px 24px;
+  }
+}
+
+// 账号密码登录
+.sign-account-password {
+  .input-account {
+    margin-bottom: 32px;
+  }
+  .input-password {
+    margin-bottom: 32px;
+  }
+  .input-button {
+    padding-top: 4px;
+    padding-bottom: 32px;
+    position: relative;
+    .button {
+      height: 42px;
+      font-size: 16px;
+    }
+    .error {
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 100%;
+      color: red;
+      font-size: 14px;
+      height: 24px;
+      line-height: 24px;
+      text-align: left;
+    }
+    .forget-password {
+      position: absolute;
+      right: 0;
+      top: 52px;
+      height: 24px;
+      padding: 0;
+      z-index: 50;
+    }
+  }
+}
+
+// 账号验证码登录
+.sign-account-no-password {
+  .input-account, .input-code {
+    margin-bottom: 32px;
+  }
+  .input-button {
+    padding-top: 4px;
+    padding-bottom: 32px;
+    position: relative;
+    .button {
+      height: 42px;
+      font-size: 16px;
+    }
+    .error {
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 100%;
+      color: red;
+      font-size: 14px;
+      height: 24px;
+      line-height: 24px;
+      text-align: left;
+    }
+  }
+}
+
+

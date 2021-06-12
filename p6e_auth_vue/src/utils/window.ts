@@ -11,13 +11,13 @@ export interface ThrottleConfigType {
 }
 
 /** 窗体大小改变参数类型 */
-export interface WindowResizeParamType {
+export interface WindowResizeType {
   width: number;
   height: number;
 }
 
 /** 窗体大小改变事件类型 */
-export type WindowResizeEvent = (e: WindowResizeParamType) => void;
+export type WindowResizeEvent = (e: WindowResizeType) => void;
 
 /**
  * window

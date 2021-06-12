@@ -13,7 +13,7 @@
                   class="button"
                   :loading="isLoading"
                   @click.stop="confirm">
-          <span v-if="!isLoading">登 录</span>
+          <span v-if="!isLoading">登录/注册</span>
         </a-button>
         <!-- 错误提示 -->
         <p class="error" v-if="error !== ''" v-text="'* ' + error"></p>

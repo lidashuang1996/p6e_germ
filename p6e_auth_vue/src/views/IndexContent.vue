@@ -5,8 +5,10 @@
     <SignIn v-if="type === 'sign'"/>
     <!-- 确认授权 -->
     <Notice v-if="type === 'auth'"/>
-<!--    <SignBindAccount/>-->
-    <SignForgetPassword/>
+    <!-- 绑定账号 -->
+    <SignBindAccount v-if="type === 'bind_account'"/>
+    <!-- 忘记密码 -->
+    <SignForgetPassword v-if="type === 'forget_password'"/>
     <!-- 数据出现异常 内容 -->
     <div class="index-content-null" v-if="type === ''">
       <a-result
@@ -27,7 +29,6 @@
 </template>
 
 <script lang="ts">
-import { VueI18n } from 'vue-i18n';
 import { Global, Utils } from '@/utils/main';
 import SignIn from '@/views/sign/SignIn.vue';
 import Notice from '@/views/notice/Notice.vue';
@@ -56,10 +57,11 @@ export default class IndexContent extends Vue {
       switch (oauth2.type) {
         case 'auth': // 授权页面
         case 'sign': // 登录/注册页面
+        case 'bind_account': // 绑定账号
+        case 'forget_password': // 找回密码
           this.type = oauth2.type;
           break;
       }
-      this.type = 'au2th';
     }
   }
 

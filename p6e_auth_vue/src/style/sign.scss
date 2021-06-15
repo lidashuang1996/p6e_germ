@@ -227,10 +227,8 @@ $sign-color: #404040;
 }
 
 
-
-
 // 忘记密码
-.sign-forget-password {
+.sign-bind-account, .sign-forget-password {
   padding: 32px 24px;
   min-height: 493px;
   max-height: 493px;

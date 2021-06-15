@@ -231,6 +231,31 @@ export default {
         }
       ]
     },
+    ba: {
+      title: '绑定账号',
+      content: [
+        ['使用第三方平台初次登录，需要绑定一下账号（手机号/邮箱），绑定账号后可以通过账号密码登录或者第三方平台登录。']
+      ],
+      button: '确 定',
+      account: {
+        placeholder: '请输入邮箱/手机号码',
+        errors: [
+          '请输入账号',
+          '账号格式不正确'
+        ]
+      },
+      code: {
+        placeholder: '请输入验证码',
+        button: {
+          obtain: '获取验证码',
+          countdown: '{data} 秒后可重发'
+        },
+        errors: [
+          '请输入验证码',
+          '请输入完整的验证码'
+        ]
+      }
+    },
     other: {
       title: '社交账号登录',
       list: [

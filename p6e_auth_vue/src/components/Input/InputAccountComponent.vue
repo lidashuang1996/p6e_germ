@@ -61,23 +61,6 @@ export default class InputAccountComponent extends Vue implements InputInterface
   }
 
   /**
-   * 验证方法
-   */
-  public test (): boolean {
-    const value = this.value;
-    if (value === '') {
-      this.error = this.errors[0];
-      return false;
-    }
-    if (!this.testEmail(value) && !this.testPhone(value)) {
-      this.error = this.errors[1];
-      return false;
-    }
-    this.error = '';
-    return true;
-  }
-
-  /**
    * 验证是否为电话号码
    */
   public testPhone (content: string): boolean {
@@ -96,8 +79,25 @@ export default class InputAccountComponent extends Vue implements InputInterface
   /**
    * 关闭错误提示
    */
-  public closePrompt () {
+  private closePrompt () {
     this.error = '';
+  }
+
+  /**
+   * 验证方法
+   */
+  public test (): boolean {
+    const value = this.value;
+    if (value === '') {
+      this.error = this.errors[0];
+      return false;
+    }
+    if (!this.testEmail(value) && !this.testPhone(value)) {
+      this.error = this.errors[1];
+      return false;
+    }
+    this.error = '';
+    return true;
   }
 
   /**

@@ -5,12 +5,17 @@
     <div class="sign-in-code-content">
       <!-- 加载中的动画 -->
       <LoadingOutlined class="code-loading" v-if="isLoading"/>
-      <div class="code-component-box">
+      <div class="code-component-box" v-else>
         <!-- 二维码层 -->
-        <div class="code-component-expiration" v-if="qrRefreshStatus" onclick="resetQrCode">
-          <template v-for="(item, index) in $tm('sign.in.qc.expiration')" :key="index">
-            <p v-text="item"></p>
-          </template>
+        <div @click.stop="resetQrCode"
+             class="code-component-expiration"
+             v-if="qrRefreshStatus || error !== ''">
+          <div v-if="error === ''">
+            <p :key="index"
+               v-text="item"
+               v-for="(item, index) in $tm('sign.in.qc.expiration')"></p>
+          </div>
+          <div v-else v-text="error"></div>
         </div>
         <!-- 二维码组件 -->
         <qr-code-component ref="refQrCodeComponent"/>
@@ -43,15 +48,23 @@ const G_MARK = Global.getOauth2().mark;
   }
 })
 export default class SignInCode extends Vue {
-  /** 是否加载中 */
-  private isLoading = true;
+  /** 错误内容 */
+  private error = '';
+  /** 是否关闭 */
   private isClose = false;
-
+  /** 是否加载中 */
+  private isLoading = false;
+  /** 二维码 数据 */
   private qrCode = '';
+  /** 二维码 记号 */
   private qrMark = '';
+  /** 二维码 -- 刷新次数 */
   private qrRefreshCount = 0;
-  private qrRefreshStatus = true;
+  /** 二维码 -- 刷新状态 */
+  private qrRefreshStatus = false;
+  /** 轮训获取数据 -- 刷新二维码 */
   private loopTimeout: any = null;
+  /** 轮训获取数据 -- 读取二维码 */
   private refreshTimeout: any = null;
 
   /**
@@ -76,6 +89,13 @@ export default class SignInCode extends Vue {
    * 关闭轮训获取数据
    */
   public unmounted () {
+    this.closeTimeout();
+  }
+
+  /**
+   * 关闭轮训获取数据
+   */
+  private closeTimeout () {
     // 状态修改为关闭状态
     this.isClose = true;
     if (this.loopTimeout != null) {
@@ -91,7 +111,7 @@ export default class SignInCode extends Vue {
   /**
    * 重新获取二维码
    */
-  public async resetQrCode () {
+  private async resetQrCode () {
     // 重置请求的次数
     this.qrRefreshCount = 0;
     // 重置请求的状态
@@ -125,6 +145,10 @@ export default class SignInCode extends Vue {
         this.qrCode = Utils.getUrlParam('code', url);
         this.qrMark = Utils.getUrlParam('mark', url);
         qrCodeComponent.qrCode(url);
+      } else {
+        const ree = this.$tm('error.' + res.message) as { [ key: string ]: string };
+        this.error = ree.content;
+        this.closeTimeout();
       }
       // 判断是否关闭，如果没有关闭就继续执行
       if (!this.isClose) {

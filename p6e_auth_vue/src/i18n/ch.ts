@@ -107,7 +107,49 @@ export default {
   sign: {
     in: {
       ap: {
-        title: '账号登录'
+        title: '账号登录',
+        np: {
+          title: '免密码登录',
+          account: {
+            placeholder: '请输入邮箱/手机号码',
+            errors: [
+              '请输入账号',
+              '账号格式不正确'
+            ]
+          },
+          code: {
+            placeholder: '请输入验证码',
+            button: {
+              obtain: '获取验证码',
+              countdown: '{data} 秒后可重发'
+            },
+            errors: [
+              '请输入验证码',
+              '请输入完整的验证码'
+            ]
+          },
+          button: '登录/注册'
+        },
+        yp: {
+          title: '密码登录',
+          button: '登 录'
+        },
+        agreement: [
+          {
+            type: 'text',
+            content: '未注册账号验证后自动登录，注册即代表同意'
+          },
+          {
+            type: 'link',
+            content: '《XXXX协议》',
+            url: 'https://www.baidu.com'
+          },
+          {
+            type: 'link',
+            content: '《隐私保护指引》',
+            url: 'https://www.baidu.com'
+          }
+        ]
       },
       qc: {
         title: '扫码登录',
@@ -136,6 +178,12 @@ export default {
     }
   },
   error: {
+    PAGE_EXPIRED: {
+      title: '错误',
+      okText: '确定',
+      content: '页面过期，请刷新重试',
+      describe: '页面过期异常'
+    },
     SERVICE_EXCEPTION: {
       title: '错误',
       okText: '确定',

@@ -12,56 +12,76 @@
       />
     </label>
     <label class="button">
-      <a-button type="link" v-if="codeDateTime === 0" @click.stop="obtainCode">获取验证码</a-button>
-      <a-button type="link" v-if="codeDateTime !== 0" :disabled="true">{{ codeDateTime }} 秒后可重发</a-button>
+      <a-button type="link"
+                @click.stop="obtainCode"
+                v-if="codeDateTime === 0">
+        <span v-text="$t('sign.in.ap.np.code.button.obtain')"></span>
+      </a-button>
+      <a-button type="link"
+                :disabled="true"
+                v-if="codeDateTime !== 0">
+        <span v-text="$t('sign.in.ap.np.code.button.countdown', { data: codeDateTime })"></span>
+      </a-button>
     </label>
     <p class="input-error" v-if="error !== ''" v-text="'* ' + error"></p>
   </div>
 </template>
 
 <script lang="ts">
-import Utils from '@/utils/main';
 import { CodeInputInterface } from '../components';
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
+  props: {
+    errors: Array,
+    maxlength: Number,
+    placeholder: String
+  },
   emits: ['focus', 'code']
 })
 export default class InputCodeComponent extends Vue implements CodeInputInterface {
-  public placeholder = '请输入验证码';
-  public maxlength = 6;
-  public value = '';
-  public error = '';
-
+  /** 输入框的内容 */
+  private value = '';
+  /** 错误提示的内容 */
+  private error = '';
+  /** PROPS 参数 -- 异常提示列表 */
+  private errors = [];
+  /** PROPS 参数 -- 最大输入长度 */
+  private maxlength = 6;
+  /** PROPS 参数 -- 输入框默认的内容 */
+  private placeholder = '请输入验证码';
   /** 从缓存中读取的登录验证编码 */
   public codeDateTime = 0;
+  /** 倒计时缓存对象 */
+  private countDownTimeout: any = null;
 
   /**
-   * 钩子函数，缓存中读取倒计时的事件
+   * 摧毁倒计时
    */
-  public mounted () {
-    this.countdown(Utils.Cache.getSignInCodeCache());
+  public unmounted () {
+    this.closeCountDownTimeout();
   }
 
   /**
    * 失去焦点
    */
-  public blurEvent () {
+  private blurEvent () {
     this.test();
   }
 
   /**
    * 获取焦点
    */
-  public focusEvent () {
+  private focusEvent () {
     this.$emit('focus');
     this.closePrompt();
   }
 
   /**
    * 输入事件
+   * 只允许数字输入
    */
-  public inputEvent () {
+  private inputEvent () {
     let v = '';
     const value = this.value;
     for (let i = 0; i < value.length; i++) {
@@ -73,16 +93,40 @@ export default class InputCodeComponent extends Vue implements CodeInputInterfac
   }
 
   /**
+   * 关闭错误提示
+   */
+  private closePrompt () {
+    this.error = '';
+  }
+
+  /**
+   * 关闭倒计时
+   */
+  private closeCountDownTimeout () {
+    if (this.countDownTimeout !== null) {
+      clearTimeout(this.countDownTimeout);
+      this.countDownTimeout = null;
+    }
+  }
+
+  /**
+   * 获取登录验证码
+   */
+  private obtainCode () {
+    this.$emit('code');
+  }
+
+  /**
    * 验证方法
    */
   public test (): boolean {
     const value = this.value;
     if (value === '') {
-      this.error = '验证码不能为空';
+      this.error = this.errors[0];
       return false;
     }
-    if (value.length < 6) {
-      this.error = '验证码长度为6位';
+    if (value.length !== 6) {
+      this.error = this.errors[1];
       return false;
     }
     this.error = '';
@@ -90,42 +134,21 @@ export default class InputCodeComponent extends Vue implements CodeInputInterfac
   }
 
   /**
-   * 关闭错误提示
-   */
-  public closePrompt () {
-    this.error = '';
-  }
-
-  /**
-   * 获取登录验证码
-   */
-  public obtainCode () {
-    this.$emit('code');
-  }
-
-  /**
    * 倒计时
    */
   public countdown (num: number | null) {
     if (this.codeDateTime <= 0) {
-      if (num !== null) {
-        this.codeDateTime = num;
-        Utils.Cache.setSignInCodeCache(num);
-      }
-      if (this.codeDateTime <= 0) {
-        this.codeDateTime = 0;
-      } else {
-        this.codeDateTime -= 1;
-        const f = () => {
-          if (this.codeDateTime <= 0) {
-            this.codeDateTime = 0;
-          } else {
-            this.codeDateTime -= 1;
-            setTimeout(() => f(), 1000);
-          }
-        };
-        setTimeout(() => f(), 1000);
-      }
+      this.closeCountDownTimeout();
+      this.codeDateTime = num === null ? 60 : num;
+      const f = () => {
+        if (this.codeDateTime <= 0) {
+          this.codeDateTime = 0;
+        } else {
+          this.codeDateTime -= 1;
+          this.countDownTimeout = setTimeout(() => f(), 1000);
+        }
+      };
+      f();
     }
   }
 

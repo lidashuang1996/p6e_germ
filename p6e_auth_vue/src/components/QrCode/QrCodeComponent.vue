@@ -7,8 +7,6 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable */
-// @ts-ignore
 import QrCode from 'qrcode';
 import { Options, Vue } from 'vue-class-component';
 import { QrCodeComponentInterface } from '../components';
@@ -16,7 +14,7 @@ import { QrCodeComponentInterface } from '../components';
 @Options({})
 export default class QrCodeComponent extends Vue implements QrCodeComponentInterface {
   /** canvas */
-  public canvas: HTMLCanvasElement | null = null;
+  private canvas: HTMLCanvasElement | null = null;
 
   /** qr code */
   public qrCode (text: string) {

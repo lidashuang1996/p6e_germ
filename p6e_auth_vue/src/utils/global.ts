@@ -1,5 +1,7 @@
 export default class Global {
   private static DATA = {};
+  private static SIGN_COUNT_DOWN = 0;
+  private static readonly SIGN_COUNT_DOWN_NAME: string = 'P6E_SIGN_COUNT_DOWN';
 
   /* eslint-disable */
   public static init () {
@@ -9,6 +11,14 @@ export default class Global {
 
   public static getOauth2 (): { type: string, mark: string } {
     return this.DATA as { type: string, mark: string };
+  }
+
+  public static setSignCountdown (num: number) {
+    this.SIGN_COUNT_DOWN = num;
+  }
+
+  public static getSignCountdown (): number {
+    return this.SIGN_COUNT_DOWN;
   }
 
 }

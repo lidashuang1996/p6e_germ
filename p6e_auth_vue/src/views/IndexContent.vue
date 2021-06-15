@@ -6,7 +6,7 @@
     <!-- 确认授权 -->
     <Notice v-if="type === 'auth'"/>
 <!--    <SignBindAccount/>-->
-<!--    <SignForgetPassword/>-->
+    <SignForgetPassword/>
     <!-- 数据出现异常 内容 -->
     <div class="index-content-null" v-if="type === ''">
       <a-result
@@ -59,7 +59,7 @@ export default class IndexContent extends Vue {
           this.type = oauth2.type;
           break;
       }
-      this.type = 'auth';
+      this.type = 'au2th';
     }
   }
 

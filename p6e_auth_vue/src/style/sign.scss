@@ -83,7 +83,31 @@ $sign-color: #404040;
 }
 
 // 登录/注册 容器
-.sign-container {}
+.sign-container {
+  .input-button {
+    padding-top: 4px;
+    padding-bottom: 32px;
+    position: relative;
+    .button {
+      height: 42px;
+      font-size: 16px;
+    }
+    .error {
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 100%;
+      color: red;
+      font-size: 14px;
+      height: 24px;
+      line-height: 24px;
+      text-align: left;
+    }
+  }
+  .input-account, .input-code, .input-password {
+    margin-bottom: 32px;
+  }
+}
 
 // 二维码登录
 .sign-in-code {
@@ -194,66 +218,33 @@ $sign-color: #404040;
 
 // 账号密码登录
 .sign-account-password {
-  .input-account {
-    margin-bottom: 32px;
-  }
-  .input-password {
-    margin-bottom: 32px;
-  }
-  .input-button {
-    padding-top: 4px;
-    padding-bottom: 32px;
-    position: relative;
-    .button {
-      height: 42px;
-      font-size: 16px;
-    }
-    .error {
-      position: absolute;
-      left: 0;
-      bottom: 2px;
-      width: 100%;
-      color: red;
-      font-size: 14px;
-      height: 24px;
-      line-height: 24px;
-      text-align: left;
-    }
-    .forget-password {
-      position: absolute;
-      right: 0;
-      top: 52px;
-      height: 24px;
-      padding: 0;
-      z-index: 50;
-    }
-  }
+
 }
 
 // 账号验证码登录
 .sign-account-no-password {
-  .input-account, .input-code {
-    margin-bottom: 32px;
+
+}
+
+
+
+
+// 忘记密码
+.sign-forget-password {
+  padding: 32px 24px;
+  min-height: 493px;
+  max-height: 493px;
+  .title {
+    font-size: 26px;
+    padding-bottom: 12px;
   }
-  .input-button {
-    padding-top: 4px;
-    padding-bottom: 32px;
-    position: relative;
-    .button {
-      height: 42px;
-      font-size: 16px;
-    }
-    .error {
-      position: absolute;
-      left: 0;
-      bottom: 2px;
-      width: 100%;
-      color: red;
-      font-size: 14px;
-      height: 24px;
-      line-height: 24px;
-      text-align: left;
-    }
+  .content {
+    color: #3d3d3d;
+    font-size: 16px;
+    padding: 20px 0 8px;
+  }
+  .operation {
+    padding-top: 12px;
   }
 }
 

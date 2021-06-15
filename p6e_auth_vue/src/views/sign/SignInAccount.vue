@@ -1,6 +1,6 @@
 <template>
   <!-- p6e auth sign in account -->
-  <div class="sign-in-account">
+  <div class="sign-in-account sign-container">
     <!-- 账号登录 / 账号密码登录，免密码登录 -->
     <div class="sign-in-account-tab">
       <ul>

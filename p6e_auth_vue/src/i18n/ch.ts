@@ -181,6 +181,56 @@ export default {
         '确认代表同意相关协议。'
       ]
     },
+    fp: {
+      title: '忘记密码',
+      step: [
+        {
+          button: '下一步',
+          content: [
+            ['可以通过{mode}的方式找回密码！', { mode: { name: '「人工申诉」', url: 'https://baidu.com' } }],
+            ['可以通过注册的邮箱/手机号码，接收验证码，通过认证找回忘记的密码！']
+          ],
+          account: {
+            placeholder: '请输入邮箱/手机号码',
+            errors: [
+              '请输入账号',
+              '账号格式不正确'
+            ]
+          },
+          code: {
+            placeholder: '请输入验证码',
+            button: {
+              obtain: '获取验证码',
+              countdown: '{data} 秒后可重发'
+            },
+            errors: [
+              '请输入验证码',
+              '请输入完整的验证码'
+            ]
+          }
+        },
+        {
+          button: '确 定',
+          content: [
+            ['请重新设置您账号（邮箱/手机号码）的密码，重新设置后可以使用账号（邮箱/手机号码）密码登录的方式登录该账号。']
+          ],
+          password1: {
+            placeholder: '请输入密码',
+            errors: [
+              '请输入密码',
+              '密码格式不正确'
+            ]
+          },
+          password2: {
+            placeholder: '请输入确认密码',
+            errors: [
+              '请输入密码',
+              '密码格式不正确'
+            ]
+          }
+        }
+      ]
+    },
     other: {
       title: '社交账号登录',
       list: [

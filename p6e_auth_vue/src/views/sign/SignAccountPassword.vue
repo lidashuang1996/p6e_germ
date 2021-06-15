@@ -4,9 +4,20 @@
     <!-- 账号/密码的表单 -->
     <form class="sign-account-password-form">
       <!-- 账号 -->
-      <InputAccountComponent class="input-account" @keyup.enter="confirm" @focus="closePrompt" ref="refInputAccount"/>
+      <InputAccountComponent ref="refInputAccount"
+                             class="input-account"
+                             @focus="closePrompt"
+                             @keyup.enter="confirm"
+                             :errors="$tm('sign.in.ap.yp.account.errors')"
+                             :placeholder="$t('sign.in.ap.yp.account.placeholder')"/>
       <!-- 密码 -->
-      <InputPasswordComponent class="input-password" @keyup.enter="confirm" @focus="closePrompt" ref="refInputPassword"/>
+      <InputPasswordComponent ref="refInputPassword"
+                              class="input-password"
+                              @keyup.enter="confirm"
+                              @focus="closePrompt"
+                              :errors="$tm('sign.in.ap.yp.password.errors')"
+                              :placeholder="$t('sign.in.ap.yp.password.placeholder')"/>
+
       <!-- 按钮 -->
       <div class="input-button">
         <a-button type="primary"
@@ -14,10 +25,12 @@
                   class="button"
                   :loading="isLoading"
                   @click.stop="confirm">
-          <span v-if="!isLoading">登 录</span>
+          <span v-if="!isLoading" v-text="$tm('sign.in.ap.yp.button')"></span>
         </a-button>
         <!-- 忘记密码 -->
-        <a-button type="link" class="forget-password">忘记密码？</a-button>
+        <a-button type="link" class="forget-password" @click="forgetPassword">
+          <span v-text="$tm('sign.in.ap.yp.buttonForgetPassword')"></span>
+        </a-button>
         <!-- 错误提示 -->
         <p class="error" v-if="error !== ''" v-text="'* ' + error"></p>
       </div>
@@ -26,20 +39,18 @@
 </template>
 
 <script lang="ts">
-// 从全局读取的数据
-/* eslint-disable */
-// @ts-ignore
-const G_MARK = window['P6E_OAUTH2_DATA'].mark;
-import Cache, { AuthModel } from '@/utils/cache';
-import Auth from '@/utils/auth';
 import JSEncrypt from 'jsencrypt';
 import { Modal } from 'ant-design-vue';
+import { Global } from '@/utils/main';
 import { ApiSignIn } from '@/http/main-sign-in';
 import { ApiSignVoucher } from '@/http/main-sign';
 import { Options, Vue } from 'vue-class-component';
 import { InputInterface } from '@/components/components.ts';
 import InputAccountComponent from '@/components/Input/InputAccountComponent.vue';
 import InputPasswordComponent from '@/components/Input/InputPasswordComponent.vue';
+
+/** 全局读取的 MARK */
+const G_MARK = Global.getOauth2().mark;
 
 @Options({
   components: {
@@ -59,35 +70,30 @@ export default class SignAccountPassword extends Vue {
   /**
    * 登录确认的方法
    */
-  public async confirm () {
+  private async confirm () {
     // 转换为输入框的类型
     const account = this.$refs.refInputAccount as InputInterface;
     const password = this.$refs.refInputPassword as InputInterface;
     // 验证数据格式以及判断是否在登录中
     if (account.test() && password.test() && !this.isLoading) {
-      // 发送登录请求
-      try {
-        this.isLoading = true;
-        // 获取登录的凭证
-        if (this.voucher === '') {
-          const res1 = await ApiSignVoucher({ mark: G_MARK });
-          if (res1.code === 0) {
-            this.voucher = res1.data.voucher;
-            this.publicKey = res1.data.publicKey;
-          } else {
-            this.isLoading = false;
-            this.error = res1.message;
-            return;
-          }
-        }
-        // 使用公钥加密
-        const encrypt = new JSEncrypt({});
-        encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + this.publicKey + '-----END PUBLIC KEY-----');
-        const resultEncrypt = encrypt.encrypt(password.getData());
-        if (!resultEncrypt) {
-          this.error = '网页异常，请稍后重试！';
+      this.isLoading = true;
+      // 获取登录的凭证
+      if (this.voucher === '') {
+        const res1 = await ApiSignVoucher({ mark: G_MARK });
+        if (res1.code === 0) {
+          this.voucher = res1.data.voucher;
+          this.publicKey = res1.data.publicKey;
+        } else {
+          this.isLoading = false;
+          this.error = res1.message;
           return;
         }
+      }
+      // 使用公钥加密
+      const encrypt = new JSEncrypt({});
+      encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----' + this.publicKey + '-----END PUBLIC KEY-----');
+      const resultEncrypt = encrypt.encrypt(password.getData());
+      if (resultEncrypt) {
         // 执行登录操作
         const res2 = await ApiSignIn({
           mark: G_MARK,
@@ -95,31 +101,38 @@ export default class SignAccountPassword extends Vue {
           account: account.getData(),
           password: resultEncrypt.toString()
         });
-        if (res2.code === 0) {
-          // 处理登录之后的操作
-          Cache.setAuthData(res2.data as AuthModel);
-          // 去新的页面
-          await Auth.init();
-        } else {
-          this.isLoading = false;
-          this.error = '账号或者密码错误';
-          return;
+        if (res2.code !== 0) {
+          const ree = this.$tm('error.' + res2.message) as { [ key: string ]: string };
+          Modal.error({
+            centered: true,
+            title: ree.title,
+            okText: ree.okText,
+            content: ree.content
+          });
         }
-      } catch (e) {
-        this.isLoading = false;
+      } else {
+        const ree = this.$tm('error.SERVICE_EXCEPTION') as { [ key: string ]: string };
         Modal.error({
-          title: '提示',
-          okText: '确认',
-          content: '网络异常，请稍后重试！'
+          centered: true,
+          title: ree.title,
+          okText: ree.okText,
+          content: ree.content
         });
       }
     }
   }
 
   /**
+   * 忘记密码
+   */
+  private forgetPassword () {
+    console.log('forgetPassword --- 123');
+  }
+
+  /**
    * 关闭错误提示
    */
-  public closePrompt () {
+  private closePrompt () {
     this.error = '';
   }
 }

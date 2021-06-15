@@ -59,6 +59,7 @@ export default class IndexContent extends Vue {
           this.type = oauth2.type;
           break;
       }
+      this.type = 'auth';
     }
   }
 

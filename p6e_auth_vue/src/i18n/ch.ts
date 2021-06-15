@@ -132,7 +132,22 @@ export default {
         },
         yp: {
           title: '密码登录',
-          button: '登 录'
+          button: '登 录',
+          buttonForgetPassword: '忘记密码？',
+          account: {
+            placeholder: '请输入邮箱/手机号码',
+            errors: [
+              '请输入账号',
+              '账号格式不正确'
+            ]
+          },
+          password: {
+            placeholder: '请输入密码',
+            errors: [
+              '请输入密码',
+              '密码格式不正确'
+            ]
+          }
         },
         agreement: [
           {
@@ -158,6 +173,13 @@ export default {
       }
     },
     up: {
+    },
+    notice: {
+      button: '确 认',
+      content: [
+        '你正在进行授权给',
+        '确认代表同意相关协议。'
+      ]
     },
     other: {
       title: '社交账号登录',

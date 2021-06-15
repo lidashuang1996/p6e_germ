@@ -39,38 +39,45 @@ import { Options, Vue } from 'vue-class-component';
   }
 })
 export default class InputPasswordComponent extends Vue implements InputInterface {
-  public value = '';
+  private value = '';
   /** 错误提示文本 */
   private error = '';
   /** PROPS 参数 -- 文本输入框类型 */
-  public type = 'password';
+  private type = 'password';
   /** PROPS 参数 -- 异常提示列表 */
   private errors = [];
   /** PROPS 参数 -- 最大输入长度 */
-  public maxlength = 24;
+  private maxlength = 24;
   /** PROPS 参数 -- 输入框默认的内容 */
-  public placeholder = '请输入密码';
+  private placeholder = '请输入密码';
 
   /**
    * 输入框的类型切换
    */
-  public inputTypeSwitch () {
+  private inputTypeSwitch () {
     this.type = this.type === 'password' ? 'text' : 'password';
   }
 
   /**
    * 失去焦点
    */
-  public blurEvent () {
+  private blurEvent () {
     this.test();
   }
 
   /**
    * 获取焦点
    */
-  public focusEvent () {
+  private focusEvent () {
     this.$emit('focus');
     this.closePrompt();
+  }
+
+  /**
+   * 关闭错误提示
+   */
+  private closePrompt () {
+    this.error = '';
   }
 
   /**
@@ -88,13 +95,6 @@ export default class InputPasswordComponent extends Vue implements InputInterfac
     }
     this.error = '';
     return true;
-  }
-
-  /**
-   * 关闭错误提示
-   */
-  public closePrompt () {
-    this.error = '';
   }
 
   /**

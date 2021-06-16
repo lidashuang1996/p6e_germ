@@ -1,6 +1,8 @@
 <template>
   <!-- 登录/注册/确认授权/忘记密码/绑定账号 内容 -->
   <div class="index-content">
+    <!-- 用户信息 -->
+    <Me v-if="type === 'me'"/>
     <!-- 登录/注册 -->
     <SignIn v-if="type === 'sign'"/>
     <!-- 确认授权 -->
@@ -30,6 +32,7 @@
 
 <script lang="ts">
 import { Global, Utils } from '@/utils/main';
+import Me from '@/views/me/Me.vue';
 import SignIn from '@/views/sign/SignIn.vue';
 import Notice from '@/views/notice/Notice.vue';
 import { Options, Vue } from 'vue-class-component';
@@ -38,6 +41,7 @@ import SignForgetPassword from '@/views/sign/SignForgetPassword.vue';
 
 @Options({
   components: {
+    Me,
     SignIn,
     Notice,
     SignBindAccount,
@@ -55,6 +59,7 @@ export default class IndexContent extends Vue {
     const oauth2 = Global.getOauth2();
     if (Utils.isNotEmpty(oauth2) && Utils.isNotEmpty(oauth2.type)) {
       switch (oauth2.type) {
+        case 'me': // 用户
         case 'auth': // 授权页面
         case 'sign': // 登录/注册页面
         case 'bind_account': // 绑定账号

@@ -172,8 +172,6 @@ export default {
         expiration: ['二维码已经过期', '请点击重新获取']
       }
     },
-    up: {
-    },
     notice: {
       button: '确 认',
       content: [
@@ -272,6 +270,41 @@ export default {
           name: '微博'
         }
       ]
+    },
+    me: {
+      title: '用户信息',
+      content: [
+        {
+          name: 'ID',
+          key: 'id'
+        },
+        {
+          name: '邮箱',
+          key: 'mail'
+        },
+        {
+          name: '手机号码',
+          key: 'phone'
+        },
+        {
+          name: '是否绑定 QQ',
+          key: 'qq'
+        },
+        {
+          name: '是否绑定微信',
+          key: 'wechat'
+        },
+        {
+          name: '是否绑定新浪',
+          key: 'sian'
+        }
+      ],
+      logout: {
+        title: '你确定退出登录吗?',
+        okText: '确定',
+        cancelText: '取消'
+      },
+      button: '退出登录'
     }
   },
   error: {

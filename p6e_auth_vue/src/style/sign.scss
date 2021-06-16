@@ -218,7 +218,12 @@ $sign-color: #404040;
 
 // 账号密码登录
 .sign-account-password {
-
+  .forget-password {
+    position: absolute;
+    top: 46px;
+    right: 0;
+    padding: 0;
+  }
 }
 
 // 账号验证码登录
@@ -228,6 +233,7 @@ $sign-color: #404040;
 
 
 // 忘记密码
+// 绑定账号
 .sign-bind-account, .sign-forget-password {
   padding: 32px 24px;
   min-height: 493px;
